@@ -14,13 +14,14 @@
 		CD00CA10205707EE008E0A75 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD00CA0F205707EE008E0A75 /* Assets.xcassets */; };
 		CD00CA13205707EE008E0A75 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD00CA11205707EE008E0A75 /* LaunchScreen.storyboard */; };
 		CD00CA21205714CF008E0A75 /* BackgroundNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD00CA20205714CF008E0A75 /* BackgroundNode.swift */; };
+		CD1D198F206843D4009E17E2 /* DustBrown.sks in Resources */ = {isa = PBXBuildFile; fileRef = CD1D198E206843D4009E17E2 /* DustBrown.sks */; };
+		CD1D19912068444B009E17E2 /* Emitters.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1D19902068444B009E17E2 /* Emitters.swift */; };
 		CD57A4D820583DEE003DF1D4 /* SKCameraNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57A4D720583DEE003DF1D4 /* SKCameraNode.swift */; };
 		CD57A4DA20584104003DF1D4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57A4D920584104003DF1D4 /* Constants.swift */; };
 		CD57A4DF20598D50003DF1D4 /* WorldTiles.sks in Resources */ = {isa = PBXBuildFile; fileRef = CD57A4DE20598D50003DF1D4 /* WorldTiles.sks */; };
 		CD57A4E120598F77003DF1D4 /* WorldScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = CD57A4E020598F77003DF1D4 /* WorldScene.sks */; };
 		CD57A50720599A05003DF1D4 /* WorldNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57A50620599A05003DF1D4 /* WorldNode.swift */; };
 		CD57A5092059BC0E003DF1D4 /* SKNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57A5082059BC0E003DF1D4 /* SKNode.swift */; };
-		CD57A50B2059BF41003DF1D4 /* SKTileMapNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57A50A2059BF41003DF1D4 /* SKTileMapNode.swift */; };
 		CD57A50D2059C59B003DF1D4 /* PlayerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57A50C2059C59B003DF1D4 /* PlayerNode.swift */; };
 		CD57A5102059CB67003DF1D4 /* Physics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57A50F2059CB67003DF1D4 /* Physics.swift */; };
 		CD57A5122059D089003DF1D4 /* UtilVector.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57A5112059D089003DF1D4 /* UtilVector.swift */; };
@@ -34,7 +35,16 @@
 		CD69531A205D95360032DE97 /* Jump.atlas in Resources */ = {isa = PBXBuildFile; fileRef = CD695319205D95360032DE97 /* Jump.atlas */; };
 		CD69531C205D9A420032DE97 /* Land.atlas in Resources */ = {isa = PBXBuildFile; fileRef = CD69531B205D97690032DE97 /* Land.atlas */; };
 		CD69531F205D9E5B0032DE97 /* PlayerBulletNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69531E205D9E5B0032DE97 /* PlayerBulletNode.swift */; };
-		CD695321205DAA730032DE97 /* PlayerBullet.atlas in Resources */ = {isa = PBXBuildFile; fileRef = CD695320205DAA730032DE97 /* PlayerBullet.atlas */; };
+		CDA4286520643884002836CA /* AlternativeMovementCollision.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA4286420643884002836CA /* AlternativeMovementCollision.swift */; };
+		CDA42868206451C3002836CA /* ExplosionFire.sks in Resources */ = {isa = PBXBuildFile; fileRef = CDA42866206451C3002836CA /* ExplosionFire.sks */; };
+		CDA42869206451C3002836CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDA42867206451C3002836CA /* Assets.xcassets */; };
+		CDA4287020645C15002836CA /* ExplosionSmoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = CDA4286E20645C15002836CA /* ExplosionSmoke.sks */; };
+		CDB529EF206306BD00DFE983 /* SKTileMapNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB529EE206306BD00DFE983 /* SKTileMapNode.swift */; };
+		CDCC43CA2067C24A00A5E2DE /* Amunition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC43C92067C24A00A5E2DE /* Amunition.swift */; };
+		CDCC43CE2067C46900A5E2DE /* PlayerBullet.atlas in Resources */ = {isa = PBXBuildFile; fileRef = CDCC43CD2067C46500A5E2DE /* PlayerBullet.atlas */; };
+		CDCC43F62067CB8C00A5E2DE /* MuzzleNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC43F52067CB8C00A5E2DE /* MuzzleNode.swift */; };
+		CDCC43F82067D3C200A5E2DE /* ReusableNodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC43F72067D3C200A5E2DE /* ReusableNodes.swift */; };
+		CDCC43FA2067E81000A5E2DE /* DestroyedTileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC43F92067E81000A5E2DE /* DestroyedTileNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,13 +57,14 @@
 		CD00CA12205707EE008E0A75 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CD00CA14205707EE008E0A75 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD00CA20205714CF008E0A75 /* BackgroundNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundNode.swift; sourceTree = "<group>"; };
+		CD1D198E206843D4009E17E2 /* DustBrown.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DustBrown.sks; sourceTree = "<group>"; };
+		CD1D19902068444B009E17E2 /* Emitters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emitters.swift; sourceTree = "<group>"; };
 		CD57A4D720583DEE003DF1D4 /* SKCameraNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKCameraNode.swift; sourceTree = "<group>"; };
 		CD57A4D920584104003DF1D4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CD57A4DE20598D50003DF1D4 /* WorldTiles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = WorldTiles.sks; sourceTree = "<group>"; };
 		CD57A4E020598F77003DF1D4 /* WorldScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = WorldScene.sks; sourceTree = "<group>"; };
 		CD57A50620599A05003DF1D4 /* WorldNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldNode.swift; sourceTree = "<group>"; };
 		CD57A5082059BC0E003DF1D4 /* SKNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKNode.swift; sourceTree = "<group>"; };
-		CD57A50A2059BF41003DF1D4 /* SKTileMapNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKTileMapNode.swift; sourceTree = "<group>"; };
 		CD57A50C2059C59B003DF1D4 /* PlayerNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerNode.swift; sourceTree = "<group>"; };
 		CD57A50F2059CB67003DF1D4 /* Physics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Physics.swift; sourceTree = "<group>"; };
 		CD57A5112059D089003DF1D4 /* UtilVector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtilVector.swift; sourceTree = "<group>"; };
@@ -67,7 +78,16 @@
 		CD695319205D95360032DE97 /* Jump.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Jump.atlas; sourceTree = "<group>"; };
 		CD69531B205D97690032DE97 /* Land.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Land.atlas; sourceTree = "<group>"; };
 		CD69531E205D9E5B0032DE97 /* PlayerBulletNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerBulletNode.swift; sourceTree = "<group>"; };
-		CD695320205DAA730032DE97 /* PlayerBullet.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = PlayerBullet.atlas; sourceTree = "<group>"; };
+		CDA4286420643884002836CA /* AlternativeMovementCollision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeMovementCollision.swift; sourceTree = "<group>"; };
+		CDA42866206451C3002836CA /* ExplosionFire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ExplosionFire.sks; sourceTree = "<group>"; };
+		CDA42867206451C3002836CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CDA4286E20645C15002836CA /* ExplosionSmoke.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ExplosionSmoke.sks; sourceTree = "<group>"; };
+		CDB529EE206306BD00DFE983 /* SKTileMapNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKTileMapNode.swift; sourceTree = "<group>"; };
+		CDCC43C92067C24A00A5E2DE /* Amunition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amunition.swift; sourceTree = "<group>"; };
+		CDCC43CD2067C46500A5E2DE /* PlayerBullet.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = PlayerBullet.atlas; sourceTree = "<group>"; };
+		CDCC43F52067CB8C00A5E2DE /* MuzzleNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuzzleNode.swift; sourceTree = "<group>"; };
+		CDCC43F72067D3C200A5E2DE /* ReusableNodes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableNodes.swift; sourceTree = "<group>"; };
+		CDCC43F92067E81000A5E2DE /* DestroyedTileNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestroyedTileNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,16 +124,16 @@
 				CD00CA0A205707EE008E0A75 /* GameViewController.swift */,
 				CD57A515205AF9C6003DF1D4 /* Game */,
 				CD00CA1A20570B33008E0A75 /* Nodes */,
+				CDCC43CB2067C35D00A5E2DE /* Effects */,
 				CD57A4DB20584135003DF1D4 /* Util */,
 				CD695318205D94C60032DE97 /* Player Atlas */,
-				CD695320205DAA730032DE97 /* PlayerBullet.atlas */,
-				CD66656A20603A6C00DE934F /* Muzzle.atlas */,
 				CD00CA0F205707EE008E0A75 /* Assets.xcassets */,
 				CD00CA0C205707EE008E0A75 /* Main.storyboard */,
 				CD57A4DE20598D50003DF1D4 /* WorldTiles.sks */,
 				CD57A4E020598F77003DF1D4 /* WorldScene.sks */,
 				CD00CA11205707EE008E0A75 /* LaunchScreen.storyboard */,
 				CD00CA14205707EE008E0A75 /* Info.plist */,
+				CDA4286420643884002836CA /* AlternativeMovementCollision.swift */,
 			);
 			path = RocketMan;
 			sourceTree = "<group>";
@@ -124,11 +144,8 @@
 				CD57A518205AFC21003DF1D4 /* PhysicsNode.swift */,
 				CD57A516205AFAF6003DF1D4 /* Characters */,
 				CD69531D205D9E2F0032DE97 /* Amunition */,
-				CD00CA20205714CF008E0A75 /* BackgroundNode.swift */,
-				CD57A50620599A05003DF1D4 /* WorldNode.swift */,
-				CD57A4D720583DEE003DF1D4 /* SKCameraNode.swift */,
-				CD57A50A2059BF41003DF1D4 /* SKTileMapNode.swift */,
-				CD57A5082059BC0E003DF1D4 /* SKNode.swift */,
+				CDCC43C72067C20A00A5E2DE /* World */,
+				CDCC43C82067C23300A5E2DE /* Other */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -139,6 +156,7 @@
 				CD57A4D920584104003DF1D4 /* Constants.swift */,
 				CD57A5112059D089003DF1D4 /* UtilVector.swift */,
 				CD57A51A205B0322003DF1D4 /* CGRect.swift */,
+				CDCC43F72067D3C200A5E2DE /* ReusableNodes.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -168,6 +186,8 @@
 				CD666568206037E500DE934F /* RunShoot.atlas */,
 				CD69531B205D97690032DE97 /* Land.atlas */,
 				CD6665662060284C00DE934F /* JumpShoot.atlas */,
+				CD66656A20603A6C00DE934F /* Muzzle.atlas */,
+				CDCC43CD2067C46500A5E2DE /* PlayerBullet.atlas */,
 				CD695319205D95360032DE97 /* Jump.atlas */,
 			);
 			path = "Player Atlas";
@@ -176,9 +196,43 @@
 		CD69531D205D9E2F0032DE97 /* Amunition */ = {
 			isa = PBXGroup;
 			children = (
+				CDCC43C92067C24A00A5E2DE /* Amunition.swift */,
 				CD69531E205D9E5B0032DE97 /* PlayerBulletNode.swift */,
+				CDCC43F52067CB8C00A5E2DE /* MuzzleNode.swift */,
 			);
 			path = Amunition;
+			sourceTree = "<group>";
+		};
+		CDCC43C72067C20A00A5E2DE /* World */ = {
+			isa = PBXGroup;
+			children = (
+				CD57A50620599A05003DF1D4 /* WorldNode.swift */,
+				CDB529EE206306BD00DFE983 /* SKTileMapNode.swift */,
+				CD00CA20205714CF008E0A75 /* BackgroundNode.swift */,
+				CDCC43F92067E81000A5E2DE /* DestroyedTileNode.swift */,
+			);
+			path = World;
+			sourceTree = "<group>";
+		};
+		CDCC43C82067C23300A5E2DE /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				CD57A4D720583DEE003DF1D4 /* SKCameraNode.swift */,
+				CD57A5082059BC0E003DF1D4 /* SKNode.swift */,
+			);
+			path = Other;
+			sourceTree = "<group>";
+		};
+		CDCC43CB2067C35D00A5E2DE /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				CD1D19902068444B009E17E2 /* Emitters.swift */,
+				CDA42866206451C3002836CA /* ExplosionFire.sks */,
+				CDA4286E20645C15002836CA /* ExplosionSmoke.sks */,
+				CD1D198E206843D4009E17E2 /* DustBrown.sks */,
+				CDA42867206451C3002836CA /* Assets.xcassets */,
+			);
+			path = Effects;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,11 +298,15 @@
 				CD57A4E120598F77003DF1D4 /* WorldScene.sks in Resources */,
 				CD00CA0E205707EE008E0A75 /* Main.storyboard in Resources */,
 				CD69531A205D95360032DE97 /* Jump.atlas in Resources */,
+				CDA42869206451C3002836CA /* Assets.xcassets in Resources */,
 				CD69531C205D9A420032DE97 /* Land.atlas in Resources */,
 				CD666569206037E500DE934F /* RunShoot.atlas in Resources */,
+				CD1D198F206843D4009E17E2 /* DustBrown.sks in Resources */,
+				CDA42868206451C3002836CA /* ExplosionFire.sks in Resources */,
 				CD66656B20603A6C00DE934F /* Muzzle.atlas in Resources */,
-				CD695321205DAA730032DE97 /* PlayerBullet.atlas in Resources */,
+				CDA4287020645C15002836CA /* ExplosionSmoke.sks in Resources */,
 				CD00CA10205707EE008E0A75 /* Assets.xcassets in Resources */,
+				CDCC43CE2067C46900A5E2DE /* PlayerBullet.atlas in Resources */,
 				CD695317205D91480032DE97 /* Run.atlas in Resources */,
 				CD00CA13205707EE008E0A75 /* LaunchScreen.storyboard in Resources */,
 				CD66656720602E0D00DE934F /* JumpShoot.atlas in Resources */,
@@ -266,17 +324,23 @@
 				CD57A519205AFC21003DF1D4 /* PhysicsNode.swift in Sources */,
 				CD00CA09205707EE008E0A75 /* GameScene.swift in Sources */,
 				CD00CA21205714CF008E0A75 /* BackgroundNode.swift in Sources */,
+				CD1D19912068444B009E17E2 /* Emitters.swift in Sources */,
 				CD57A5092059BC0E003DF1D4 /* SKNode.swift in Sources */,
 				CD57A5122059D089003DF1D4 /* UtilVector.swift in Sources */,
 				CD57A5102059CB67003DF1D4 /* Physics.swift in Sources */,
+				CDCC43F62067CB8C00A5E2DE /* MuzzleNode.swift in Sources */,
 				CD57A51B205B0322003DF1D4 /* CGRect.swift in Sources */,
-				CD57A50B2059BF41003DF1D4 /* SKTileMapNode.swift in Sources */,
+				CDCC43F82067D3C200A5E2DE /* ReusableNodes.swift in Sources */,
 				CD00CA0B205707EE008E0A75 /* GameViewController.swift in Sources */,
+				CDCC43FA2067E81000A5E2DE /* DestroyedTileNode.swift in Sources */,
+				CDA4286520643884002836CA /* AlternativeMovementCollision.swift in Sources */,
 				CD00CA03205707EE008E0A75 /* AppDelegate.swift in Sources */,
 				CD57A50720599A05003DF1D4 /* WorldNode.swift in Sources */,
 				CD57A514205AF819003DF1D4 /* GameLogic.swift in Sources */,
 				CD69531F205D9E5B0032DE97 /* PlayerBulletNode.swift in Sources */,
+				CDCC43CA2067C24A00A5E2DE /* Amunition.swift in Sources */,
 				CD57A50D2059C59B003DF1D4 /* PlayerNode.swift in Sources */,
+				CDB529EF206306BD00DFE983 /* SKTileMapNode.swift in Sources */,
 				CD57A4DA20584104003DF1D4 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

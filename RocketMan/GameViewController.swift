@@ -30,4 +30,10 @@ class GameViewController: UIViewController {
     override var prefersStatusBarHidden: Bool {
         return true
     }
+    
+    override func didReceiveMemoryWarning(){
+        PlayerBulletNode.didReceiveMemoryWarning()
+        DestroyedTileNode.didReceiveMemoryWarning()
+        MuzzleNode.didReceiveMemoryWarning()
+    }
 }

@@ -14,12 +14,41 @@ enum Direction{
 
 extension GameScene{
     
+    //Runs the physics loop
     func runPhysics(){
-        updatePhysicNodes()
+        willUpdatePhysicNodes()
         applyGravity()
         moveNodes()
+        didUpdatePhysicNodes()
     }
     
+    //Calls the willUpdatePhysics() methode in each node
+    func willUpdatePhysicNodes(){
+        for skNode in children{
+            guard let node = skNode as? PhysicsNode else{continue}
+            node.willUpdatePhysics()
+        }
+    }
+    
+    //Adjuts the velocity of every physics node with isAffectedByGravity=true
+    func applyGravity(){
+        for skNode in children{
+            guard let node = skNode as? PhysicsNode else{continue}
+            if(node.isAffectedByGravity){
+                node.velocity.y += GRAVITY * CGFloat(dt)
+            }
+        }
+    }
+    
+    //Calls the didUpdatePhysics() methode in each node
+    func didUpdatePhysicNodes(){
+        for skNode in children{
+            guard let node = skNode as? PhysicsNode else{continue}
+            node.didUpdatePhysics()
+        }
+    }
+    
+    //Moves the nodes acording to node velocity and dt
     func moveNodes(){
         for skNode in children{
             guard let node = skNode as? PhysicsNode else{continue}
@@ -31,49 +60,38 @@ extension GameScene{
         }
     }
     
-    func applyGravity(){
-        for skNode in children{
-            guard let node = skNode as? PhysicsNode else{continue}
-            if(node.isAffectedByGravity){
-                node.velocity.y += GRAVITY * CGFloat(dt)
-            }
-        }
-    }
-    
-    //Calls the update methode in all PhysicNodes
-    func updatePhysicNodes(){
-        for skNode in children{
-            guard let node = skNode as? PhysicsNode else{continue}
-            node.update()
-        }
-    }
-    
     /*
-     * Adjusts movement for collision with solid word objects, the maximum valid movement will be returned.
-     * If ha solid world object is hit in x or y direction the physicsNode, hitSolidXDirection()/ hitSolidYDirection()
-     * functions are called. 
+     * Adjusts the movement to collisions.
+     *
+     * Does a line sweep along the movement each sensor point applicable to the movement. (Uses sensor points on the top or
+     * bottom edge and left or right edge corresponding to the movement direction). Scans linwSweepPoints times evenly
+     * distributed along the sensor points movement to detect collision. X and Y direction are done seperatly and the last
+     * non-colliding movement is used in each direction.
      */
+
     func adjustMovementForCollisionWithWorld(for node: PhysicsNode, with movement: CGPoint, lineSweepPoints: Int = 10) -> CGPoint{
         
         guard movement != CGPoint.zero else {return movement}
-        guard let physicsFrame = node.physicsFrame else {return movement}
         
         let movementStep = movement/CGFloat(lineSweepPoints)
         var adjustedMovement = CGPoint.zero
         var hasHitSolidYDirection = false
         var hasHitSolidXDirection = false
         
-        let pointsToCheckY = collisionPointsToCheckY(for: physicsFrame, with: movement)
-        let pointsToCheckX = collisionPointsToCheckX(for: physicsFrame, with: movement)
+        let directionX:Direction = movement.x < 0 ? .Left : .Right
+        let directionY:Direction = movement.y < 0 ? .Down : .Up
+        
+        let pointsToCheckX = directionX == .Left ? node.getLeftSensorPoints() : node.getRightSensorPoints();
+        let pointsToCheckY = directionY == .Down ? node.getBottomSensorPoints() : node.getTopSensorPoints();
         
         for _ in 0..<lineSweepPoints{
             if(!hasHitSolidYDirection){
                 adjustedMovement.y += movementStep.y
                 for point in pointsToCheckY{
                     if world.hasSolidObject(at: convert(point + adjustedMovement, to: world)){
+                        nodeHitWorld(node, at: point + adjustedMovement, direction: directionY)
                         adjustedMovement.y -= movementStep.y
                         hasHitSolidYDirection = true
-                        node.hitSolidYDirection()
                         break
                     }
                 }
@@ -83,9 +101,9 @@ extension GameScene{
                 adjustedMovement.x += movementStep.x
                 for point in pointsToCheckX{
                     if world.hasSolidObject(at: convert(point + adjustedMovement, to: world)){
+                        nodeHitWorld(node, at: point + adjustedMovement, direction: directionX)
                         adjustedMovement.x -= movementStep.x
                         hasHitSolidXDirection = true
-                        node.hitSolidXDirection()
                         break
                     }
                 }
@@ -94,66 +112,11 @@ extension GameScene{
         return adjustedMovement
     }
     
-    /*
-     * Returns an array of points on the boundary of physicsBody top or bottom that should be checked for collisions
-     * with linear sweep. The points will be spaced with a maximum of TILE_SIZE to ensure the detection of tiles with
-     * linear sweep.
-     */
-    func collisionPointsToCheckY(for physicsFrame: CGRect, with movement: CGPoint) -> [CGPoint]{
-        guard movement.y != 0 else {return []}
-        var pointsToCheck = [CGPoint]()
-        let angle = atan2(movement.y, movement.x)
-        
-        //Caclulating y-direction points to check
-        if(angle < 0){
-            //y-Movement is downwards, appending points with a maximum distance of TILE_SIZE on the bottom physicsFrame edge
-            pointsToCheck.append(CGPoint(x: physicsFrame.minX, y: physicsFrame.minY))
-            while(pointsToCheck.last!.x < physicsFrame.maxX - TILE_SIZE){
-                pointsToCheck.append(CGPoint(x: pointsToCheck.last!.x + TILE_SIZE, y: physicsFrame.minY))
-            }
-            pointsToCheck.append(CGPoint(x: physicsFrame.maxX, y: physicsFrame.minY))
-        }
-        else{
-            //y-movement is upwards, appending points with a maximum distance of TILE_SIZE on the top physicsFrame edge
-            pointsToCheck.append(CGPoint(x: physicsFrame.minX, y: physicsFrame.maxX))
-            while(pointsToCheck.last!.x < physicsFrame.maxX - TILE_SIZE){
-                pointsToCheck.append(CGPoint(x: pointsToCheck.last!.x + TILE_SIZE, y: physicsFrame.maxY))
-            }
-            pointsToCheck.append(CGPoint(x: physicsFrame.maxX, y: physicsFrame.maxY))
-        }
-        
-        return pointsToCheck
-    }
-    
-    /*
-     * Returns an array of points on the boundary of physicsBody left or right that should be checked for collisions
-     * with linear sweep. The points will be spaced with a maximum of TILE_SIZE to ensure the detection of tiles with
-     * linear sweep.
-     */
-    func collisionPointsToCheckX(for physicsFrame: CGRect, with movement: CGPoint) -> [CGPoint]{
-        guard movement.x != 0 else {return []}
-        var pointsToCheck = [CGPoint]()
-        let pi = CGFloat(Double.pi)
-        let angle = atan2(movement.y, movement.x)
-        
-        //Calculating x-direction points to check
-        if(angle < pi/2 && angle > -pi/2){
-            //Moving in right in x-direction, appending points with a maximum distance of TILE_SIZE on the right physicsFrame edge
-            pointsToCheck.append(CGPoint(x: physicsFrame.maxX, y: physicsFrame.minY))
-            while(pointsToCheck.last!.y < physicsFrame.maxY - TILE_SIZE){
-                pointsToCheck.append(CGPoint(x: physicsFrame.maxX, y: pointsToCheck.last!.y + TILE_SIZE))
-            }
-            pointsToCheck.append(CGPoint(x: physicsFrame.maxX, y: physicsFrame.maxY))
-        }
-        else{
-            //Moving in left in x-direction, appending points with a maximum distance of TILE_SIZE on the left physicsFrame edge
-            pointsToCheck.append(CGPoint(x: physicsFrame.minX, y: physicsFrame.minY))
-            while(pointsToCheck.last!.y < physicsFrame.maxY - TILE_SIZE){
-                pointsToCheck.append(CGPoint(x: physicsFrame.minX, y: pointsToCheck.last!.y + TILE_SIZE))
-            }
-            pointsToCheck.append(CGPoint(x: physicsFrame.minX, y: physicsFrame.maxY))
-        }
-        
-        return pointsToCheck
+    func nodeHitWorld(_ node: PhysicsNode, at point: CGPoint, direction: Direction){
+        if(direction == .Up){node.hitSolidRoof(in: world, at: convert(point, to: world))}
+        else if(direction == .Down){node.hitSolidGround(in: world, at: convert(point, to: world))}
+        else if(direction == .Right){node.hitSolidRight(in: world, at: convert(point, to: world))}
+        else if(direction == .Left){node.hitSolidLeft(in: world, at: convert(point, to: world))}
+        world.tileWasHit(by: node, at: convert(point, to: world))
     }
 }

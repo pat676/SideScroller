@@ -45,7 +45,6 @@ class GameScene: SKScene {
     }
     
     //MARK: - Game update
-    
     override func update(_ currentTime: TimeInterval){
         
         //Updates phase before Physics
@@ -100,6 +99,8 @@ class GameScene: SKScene {
         playableRect = CGRect(x:0, y:playableMargin, width: size.width, height: playableHeight);
     }
     
+    
+    //Removes all nodes further out of viewable screen than REMOVE_NODES_DISTANCE
     func removeNodesOutsideView(){
         for child in children{
             guard let node = child as? PhysicsNode else {continue}

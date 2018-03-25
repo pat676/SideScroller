@@ -32,6 +32,11 @@ func -=(point1: inout CGPoint, point2: CGPoint){
     point1 = point1-point2;
 }
 
+
+//func ==(point1: CGPoint, point2: CGPoint) -> Bool{
+//    return (point1.x == point2.x) && (point1.y == point2.y);
+//}
+
 func /(vector: CGPoint, scalar: CGFloat) -> CGPoint{
     var newVector = CGPoint.zero;
     newVector.x = vector.x/scalar;
@@ -53,7 +58,6 @@ func *(vector: CGPoint, scalar: CGFloat) -> CGPoint{
 func *=(vector: inout CGPoint, scalar: CGFloat){
     vector = vector*scalar;
 }
-
 
 let π = CGFloat(Double.pi)
 func shortestAngleBetween(_ angle1: CGFloat,
