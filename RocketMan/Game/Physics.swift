@@ -88,7 +88,7 @@ extension GameScene{
             if(!hasHitSolidYDirection){
                 adjustedMovement.y += movementStep.y
                 for point in pointsToCheckY{
-                    if world.hasSolidObject(at: convert(point + adjustedMovement, to: world)){
+                    if hasSolidObject(at: point + adjustedMovement){
                         nodeHitWorld(node, at: point + adjustedMovement, direction: directionY)
                         adjustedMovement.y -= movementStep.y
                         hasHitSolidYDirection = true
@@ -100,7 +100,7 @@ extension GameScene{
             if(!hasHitSolidXDirection){
                 adjustedMovement.x += movementStep.x
                 for point in pointsToCheckX{
-                    if world.hasSolidObject(at: convert(point + adjustedMovement, to: world)){
+                    if hasSolidObject(at: point + adjustedMovement){
                         nodeHitWorld(node, at: point + adjustedMovement, direction: directionX)
                         adjustedMovement.x -= movementStep.x
                         hasHitSolidXDirection = true
@@ -113,10 +113,9 @@ extension GameScene{
     }
     
     func nodeHitWorld(_ node: PhysicsNode, at point: CGPoint, direction: Direction){
-        if(direction == .Up){node.hitSolidRoof(in: world, at: convert(point, to: world))}
-        else if(direction == .Down){node.hitSolidGround(in: world, at: convert(point, to: world))}
-        else if(direction == .Right){node.hitSolidRight(in: world, at: convert(point, to: world))}
-        else if(direction == .Left){node.hitSolidLeft(in: world, at: convert(point, to: world))}
-        world.tileWasHit(by: node, at: convert(point, to: world))
+        if(direction == .Up){node.hitSolidRoof(at: point)}
+        else if(direction == .Down){node.hitSolidGround(at: point)}
+        else if(direction == .Right){node.hitSolidRight(at: point)}
+        else if(direction == .Left){node.hitSolidLeft(at: point)}
     }
 }

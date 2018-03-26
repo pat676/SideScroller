@@ -14,8 +14,9 @@ class GameScene: SKScene {
     //MARK: - Nodes
     
     var background: BackgroundNode!
-    var world: WorldNodes!
     var player: PlayerNode!
+    weak var tileMap: SKTileMapNode?
+    var tileMapsHealth = [[CGFloat]]() // Keeps track of tile health
     
     //MARK: - Properties
     
@@ -31,11 +32,23 @@ class GameScene: SKScene {
     var lastUpdateTime: TimeInterval = 0;
     var dt: TimeInterval = 0;
     
+    override var isPaused:Bool{
+        willSet(newValue){
+            super.isPaused = newValue
+            if(!newValue){
+                lastUpdateTime = 0;
+                dt = 0;
+            }
+        }
+    }
+    
     //MARK: - System
+    /*
     override init(size: CGSize){
         super.init(size: size);
     }
-    
+    */
+ 
     override func didMove(to view: SKView){
         addPlayableRect()
         addBackground()
@@ -46,18 +59,21 @@ class GameScene: SKScene {
     
     //MARK: - Game update
     override func update(_ currentTime: TimeInterval){
+        if !isPaused{
+            //Updates phase before Physics
+            updateDt(currentTime)
+            background.update(to: camera!, sceneWidth: frame.width)
+            camera!.update(dt: dt)
+            player.update(in: cameraPlayableRect)
         
-        //Updates phase before Physics
-        updateDt(currentTime)
-        background.update(to: camera!, sceneWidth: frame.width)
-        world.update(to: camera!, sceneWidth: frame.width)
-        camera?.update(dt: dt)
-        player.update(in: cameraPlayableRect)
-        
-        //Physics phase
-        runPhysics()
-        
-        removeNodesOutsideView()
+            //Physics phase
+            runPhysics()
+            checkWinCondition()
+            checkLooseCondition()
+            
+            //Cleanup phase
+            removeNodesOutsideView()
+        }
     }
     
     //Calculates the time passed since last frame
@@ -75,11 +91,6 @@ class GameScene: SKScene {
     func addBackground(){
         background = BackgroundNode(size: size)
         addChild(background)
-    }
-    
-    func addWorld(){
-        world = WorldNodes(playableRect: playableRect)
-        addChild(world)
     }
     
     func addPlayer(){
@@ -103,16 +114,18 @@ class GameScene: SKScene {
     //Removes all nodes further out of viewable screen than REMOVE_NODES_DISTANCE
     func removeNodesOutsideView(){
         for child in children{
-            guard let node = child as? PhysicsNode else {continue}
-            if (node.position.x < cameraPlayableRect.minX - REMOVE_NODES_DISTANCE) || (node.position.x > cameraPlayableRect.maxX + REMOVE_NODES_DISTANCE) || (node.position.y < cameraPlayableRect.minY - REMOVE_NODES_DISTANCE) || (node.position.y > cameraPlayableRect.maxY + REMOVE_NODES_DISTANCE){
-                node.removeFromParent()
+            if let node = child as? PhysicsNode{
+                if (node.position.x < cameraPlayableRect.minX - REMOVE_NODES_DISTANCE) || (node.position.x > cameraPlayableRect.maxX + REMOVE_NODES_DISTANCE) || (node.position.y < cameraPlayableRect.minY - REMOVE_NODES_DISTANCE) || (node.position.y > cameraPlayableRect.maxY + REMOVE_NODES_DISTANCE){
+                    node.removeFromParent()
+                }
             }
         }
     }
     
     //MARK: - DataStorage
-    
+    /*
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+ */
 }

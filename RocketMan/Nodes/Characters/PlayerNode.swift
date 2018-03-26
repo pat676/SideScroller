@@ -124,26 +124,26 @@ class PlayerNode: PhysicsNode{
     
     //MARK: - World Interactions
     
-    override func hitSolidGround(in world: WorldNodes, at worldPosition: CGPoint){
-        super.hitSolidGround(in: world, at: worldPosition)
+    override func hitSolidGround(at position: CGPoint){
+        super.hitSolidGround(at: position)
         if(currentAction == .Jumping || currentAction == .JumpShooting){
             currentAction = .Landing
         }
         velocity.y = 0
     }
     
-    override func hitSolidRoof(in world: WorldNodes, at worldPosition: CGPoint){
-        super.hitSolidRoof(in: world, at: worldPosition)
+    override func hitSolidRoof(at position: CGPoint){
+        super.hitSolidRoof(at: position)
         velocity.y = 0
     }
     
-    override func hitSolidRight(in world: WorldNodes, at worldPosition: CGPoint){
-        super.hitSolidRight(in: world, at: worldPosition)
+    override func hitSolidRight(at position: CGPoint){
+        super.hitSolidRight(at: position)
         velocity.x = 0
     }
     
-    override func hitSolidLeft(in world: WorldNodes, at worldPosition: CGPoint){
-        super.hitSolidLeft(in: world, at: worldPosition)
+    override func hitSolidLeft(at position: CGPoint){
+        super.hitSolidLeft(at: position)
         velocity.x = 0
     }
     

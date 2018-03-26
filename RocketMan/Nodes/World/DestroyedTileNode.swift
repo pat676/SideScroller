@@ -26,7 +26,7 @@ class DestroyedTileNode: PhysicsNode{
         randomVelocity(max: DESTROYED_TILE_MAX_VELOCITY)
         randomRotation()
         
-        alpha = 0.8
+        alpha = DESTROYED_TILE_ALPHA
     }
     
     //MARK: - Random random Initializations

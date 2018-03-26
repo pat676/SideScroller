@@ -16,20 +16,24 @@ class Amunition: PhysicsNode{
         return 0;
     }
     
-    override func hitSolidRoof(in world: WorldNodes, at worldPosition: CGPoint){
-        super.hitSolidRoof(in: world, at: worldPosition)
-        world.damageTile(at: worldPosition, from: self)
+    override func hitSolidRoof(at position: CGPoint){
+        super.hitSolidRoof(at: position)
+        guard let gameScene = scene as? GameScene else {return}
+        gameScene.damageTile(at: position, from: self)
     }
-    override func hitSolidLeft(in world: WorldNodes, at worldPosition: CGPoint) {
-        super.hitSolidLeft(in: world, at: worldPosition)
-        world.damageTile(at: worldPosition, from: self)
+    override func hitSolidLeft(at position: CGPoint) {
+        super.hitSolidLeft(at: position)
+        guard let gameScene = scene as? GameScene else {return}
+        gameScene.damageTile(at: position, from: self)
     }
-    override func hitSolidGround(in world: WorldNodes, at worldPosition: CGPoint) {
-        super.hitSolidGround(in: world, at: worldPosition)
-        world.damageTile(at: worldPosition, from: self)
+    override func hitSolidGround(at position: CGPoint) {
+        super.hitSolidGround(at: position)
+        guard let gameScene = scene as? GameScene else {return}
+        gameScene.damageTile(at: position, from: self)
     }
-    override func hitSolidRight(in world: WorldNodes, at worldPosition: CGPoint) {
-        super.hitSolidRight(in: world, at: worldPosition)
-        world.damageTile(at: worldPosition, from: self)
+    override func hitSolidRight(at position: CGPoint) {
+        super.hitSolidRight(at: position)
+        guard let gameScene = scene as? GameScene else {return}
+        gameScene.damageTile(at: position, from: self)
     }
 }

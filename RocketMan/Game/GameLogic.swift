@@ -10,11 +10,27 @@ import SpriteKit
 
 extension GameScene{
     
+    //MARK: - Win/Loose conditions
+    
+    //Game is won when camera.maxX has reached the edge of the til map
+    func checkWinCondition(){
+        if cameraPlayableRect.maxX >= tileMap!.frame.maxX - TILE_SIZE{
+            isPaused = true
+        }
+    }
+    
+    func checkLooseCondition(){
+        if (player.frame.maxX < cameraPlayableRect.minX || player.frame.maxY < cameraPlayableRect.minY){
+            isPaused = true
+        }
+    }
+    
     //MARK: - Touches
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else {return}
         let touchLocation = touch.location(in: self)
+        
         if(touchLocation.x < cameraPlayableRect.minX + LEFT_SCREEN_AMOUNT*cameraPlayableRect.width){
             player.jump()
         }

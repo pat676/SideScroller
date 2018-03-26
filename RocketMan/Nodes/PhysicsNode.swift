@@ -108,10 +108,10 @@ class PhysicsNode: SKSpriteNode{
     //MARK: - World Interactions
     
     //Called by the physics engine. WorldPosition coordinates are in the world frame!
-    func hitSolidLeft(in world: WorldNodes, at worldPosition: CGPoint){}
-    func hitSolidRight(in world: WorldNodes, at worldPosition: CGPoint){}
-    func hitSolidGround(in world: WorldNodes, at worldPosition: CGPoint){isOnSolidGround = true}
-    func hitSolidRoof(in world: WorldNodes, at worldPosition: CGPoint){}
+    func hitSolidLeft(at position: CGPoint){}
+    func hitSolidRight(at position: CGPoint){}
+    func hitSolidGround(at position: CGPoint){isOnSolidGround = true}
+    func hitSolidRoof(at position: CGPoint){}
     
     
     //MARK: - physicsFrame
