@@ -17,8 +17,8 @@ extension GameScene{
     //Runs the physics loop
     func runPhysics(){
         willUpdatePhysicNodes()
-        applyGravity()
         moveNodes()
+        checkNodeWithNodeCollision()
         didUpdatePhysicNodes()
     }
     
@@ -30,16 +30,6 @@ extension GameScene{
         }
     }
     
-    //Adjuts the velocity of every physics node with isAffectedByGravity=true
-    func applyGravity(){
-        for skNode in children{
-            guard let node = skNode as? PhysicsNode else{continue}
-            if(node.isAffectedByGravity){
-                node.velocity.y += GRAVITY * CGFloat(dt)
-            }
-        }
-    }
-    
     //Calls the didUpdatePhysics() methode in each node
     func didUpdatePhysicNodes(){
         for skNode in children{
@@ -48,10 +38,17 @@ extension GameScene{
         }
     }
     
-    //Moves the nodes acording to node velocity and dt
+    //Apllies gravity acceleration and moves the nodes acording to node velocity and dt
     func moveNodes(){
         for skNode in children{
             guard let node = skNode as? PhysicsNode else{continue}
+            
+            //Apply gravity acceleration
+            if(node.isAffectedByGravity){
+                node.velocity.y += GRAVITY * CGFloat(dt)
+            }
+            
+            //Move Nodes
             var movement = node.velocity*CGFloat(dt)
             if(node.isAffectedByWorldSolids){
                 movement = adjustMovementForCollisionWithWorld(for: node, with: movement)
@@ -117,5 +114,40 @@ extension GameScene{
         else if(direction == .Down){node.hitSolidGround(at: point)}
         else if(direction == .Right){node.hitSolidRight(at: point)}
         else if(direction == .Left){node.hitSolidLeft(at: point)}
+    }
+    
+    //Checks all physicsNodes for node with node collision
+    func checkNodeWithNodeCollision(){
+        var currentIndex = 0;
+        for child1 in children{
+            currentIndex += 1
+            guard let node1 = child1 as? PhysicsNode else{continue}
+            guard node1.canCollideWithPhysicNodes else {continue}
+            var i = currentIndex
+            while(i<children.count){
+                let child2 = children[i]
+                i += 1
+                guard let node2 = child2 as? PhysicsNode else{continue}
+                guard node1 != node2 else {continue}
+                guard node2.canCollideWithPhysicNodes else {continue}
+                if(node1.physicsFrame.intersects(node2.physicsFrame)){
+                    node1.collided(with: node2)
+                    node2.collided(with: node1)
+                }
+            }
+        }
+    }
+    
+    //Returns all physicsNodes colliding with the given rect
+    func getPhysicNodesColliding(with rect: CGRect) -> [PhysicsNode]{
+        var collidingNodes = [PhysicsNode]()
+        for child in children{
+            guard let node = child as? PhysicsNode else{continue}
+            guard node.canCollideWithPhysicNodes else {continue}
+            if(rect.intersects(node.physicsFrame)){
+                collidingNodes.append(node)
+            }
+        }
+        return collidingNodes
     }
 }

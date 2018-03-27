@@ -8,23 +8,11 @@
 
 import SpriteKit
 
-enum Action: Int{
-    case Idle = 0, Running, Jumping, Landing, RunShooting, JumpShooting
-}
-
-class PlayerNode: PhysicsNode{
+class PlayerNode: Living{
     
     //MARK: - Properties
     
-    var currentAction:Action = .Idle{
-        didSet(oldValue){
-            lastAction = oldValue
-            updateAnimation()
-        }
-    }
-    var lastAction:Action = .Idle
-    
-    var canShoot: Bool{ get{ return currentAction == .Jumping || currentAction == .Running} }
+    var canShoot: Bool{ get{ return currentAction == .Jumping || currentAction == .Moving} }
     var canJump: Bool{ get{ return isOnSolidGround && (currentAction != .Jumping && currentAction != .JumpShooting)} }
     
     var originalSize: CGSize!
@@ -44,14 +32,11 @@ class PlayerNode: PhysicsNode{
         originalSize = size
         scale(to: PLAYER_SIZE)
         
-        isAffectedByGravity = true
         physicsFrameScale = PLAYER_PHYSICS_FRAME_SCALE
-        
-        anchorPoint = CGPoint.zero
         position = CGPoint(x: playerMargin, y:playableRect.minY + TILE_SIZE + 500)
         
         addAnimations()
-        currentAction = .Running
+        currentAction = .Moving
         updateAnimation()
     }
     
@@ -81,17 +66,17 @@ class PlayerNode: PhysicsNode{
     //MARK: - Animations
     
     func addAnimations(){
-        runAnimation = SKNode.createAnimation(from: "Run", timePerFrame: STANDARD_TIME_PER_FRAME)
-        jumpAnimation = SKNode.createAnimation(from: "Jump", timePerFrame: STANDARD_TIME_PER_FRAME)
-        landAnimation = SKNode.createAnimation(from: "Land", timePerFrame: STANDARD_TIME_PER_FRAME)
-        jumpShootAnimation = SKNode.createAnimation(from: "JumpShoot", timePerFrame: STANDARD_TIME_PER_FRAME)
-        runShootAnimation = SKNode.createAnimation(from: "RunShoot", timePerFrame: STANDARD_TIME_PER_FRAME)
+        runAnimation = SKNode.createAnimation(from: "PlayerRun", timePerFrame: STANDARD_TIME_PER_FRAME)
+        jumpAnimation = SKNode.createAnimation(from: "PlayerJump", timePerFrame: STANDARD_TIME_PER_FRAME)
+        landAnimation = SKNode.createAnimation(from: "PlayerLand", timePerFrame: STANDARD_TIME_PER_FRAME)
+        jumpShootAnimation = SKNode.createAnimation(from: "PlayerJumpShoot", timePerFrame: STANDARD_TIME_PER_FRAME)
+        runShootAnimation = SKNode.createAnimation(from: "PlayerRunShoot", timePerFrame: STANDARD_TIME_PER_FRAME)
     }
     
-    func updateAnimation(){
+    override func updateAnimation(){
         removeAllActions()
         
-        if(currentAction == .Running){
+        if(currentAction == .Moving){
             run(SKAction.repeatForever(runAnimation), withKey: "ActionAnimation")
         }
             
@@ -103,7 +88,7 @@ class PlayerNode: PhysicsNode{
         }
             
         else if(currentAction == .Landing){
-            let completionAction = SKAction.customAction(withDuration: 0){_,_ in self.currentAction = .Running}
+            let completionAction = SKAction.customAction(withDuration: 0){_,_ in self.currentAction = .Moving}
             let sequence = SKAction.sequence([landAnimation, completionAction])
             run(sequence, withKey: "ActionAnimation")
             texture = SKTexture(imageNamed: "playerIdle")
@@ -115,8 +100,8 @@ class PlayerNode: PhysicsNode{
             run(sequence, withKey: "ActionAnimation")
         }
         
-        else if(currentAction == .RunShooting){
-            let completionAction = SKAction.customAction(withDuration: 0){_,_ in self.currentAction = .Running}
+        else if(currentAction == .MovingShoot){
+            let completionAction = SKAction.customAction(withDuration: 0){_,_ in self.currentAction = .Moving}
             let sequence = SKAction.sequence([runShootAnimation, completionAction])
             run(sequence, withKey: "ActionAnimation")
         }
@@ -129,22 +114,6 @@ class PlayerNode: PhysicsNode{
         if(currentAction == .Jumping || currentAction == .JumpShooting){
             currentAction = .Landing
         }
-        velocity.y = 0
-    }
-    
-    override func hitSolidRoof(at position: CGPoint){
-        super.hitSolidRoof(at: position)
-        velocity.y = 0
-    }
-    
-    override func hitSolidRight(at position: CGPoint){
-        super.hitSolidRight(at: position)
-        velocity.x = 0
-    }
-    
-    override func hitSolidLeft(at position: CGPoint){
-        super.hitSolidLeft(at: position)
-        velocity.x = 0
     }
     
     //MARK: - Actions
@@ -163,8 +132,8 @@ class PlayerNode: PhysicsNode{
         if(currentAction == .Jumping){
             currentAction = .JumpShooting
         }
-        else if(currentAction == .Running){
-            currentAction = .RunShooting
+        else if(currentAction == .Moving){
+            currentAction = .MovingShoot
         }
         addMuzzle()
         return bullet
@@ -174,12 +143,5 @@ class PlayerNode: PhysicsNode{
         let muzzleNode = MuzzleNode.dequeReusableNode()
         muzzleNode.position = CGPoint(x:originalSize.width*PLAYER_MUZZLE_POSITION.x , y:PLAYER_MUZZLE_POSITION.y*originalSize.height)
         self.addChild(muzzleNode)
-    }
-
-    //MARK: - Util
-    
-    //Returns the center position of the frame
-    func centerPosition() -> CGPoint{
-        return CGPoint(x:position.x + frame.width/2, y: position.y + frame.height/2)
     }
 }

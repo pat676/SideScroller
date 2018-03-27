@@ -32,10 +32,10 @@ extension GameScene{
         let touchLocation = touch.location(in: self)
         
         if(touchLocation.x < cameraPlayableRect.minX + LEFT_SCREEN_AMOUNT*cameraPlayableRect.width){
-            player.jump()
+            if(!isPaused) {player.jump()}
         }
         else{
-            playerFire(at: touch.location(in: self))
+            if(!isPaused) {playerFire(at: touch.location(in: self))}
         }
     }
     

@@ -10,8 +10,8 @@ import SpriteKit
 
 extension GameScene{
     
-    func addWorld(){
-        guard let tileMap = childNode(withName: "GroundFlat") as? SKTileMapNode else {fatalError("Could not find tile map")}
+    func initWorld(){
+        guard let tileMap = childNode(withName: "World") as? SKTileMapNode else {fatalError("Could not find World tile map")}
         self.tileMap = tileMap
         tileMap.anchorPoint = CGPoint.zero
         tileMap.position = CGPoint(x: 0, y: playableRect.minY)
@@ -34,12 +34,9 @@ extension GameScene{
         let localPos = convert(position, to: tileMap!)
         guard let row = tileMap?.tileRowIndex(fromPosition: localPos) else {return}
         guard let col = tileMap?.tileColumnIndex(fromPosition: localPos) else {return}
-        if(node.AOERange == CGPoint.zero){
-            damageSingleTile(row: row, column: col, damage: node.getWorldDamage())
-        }
-        else{
-            damageAOE(row: row, column: col, damage: node.getWorldDamage(), position: localPos, AOE: node.AOERange)
-        }
+
+        damageSingleTile(row: row, column: col, damage: node.damage)
+        damageAOE(row: row, column: col, damage: node.AOEDamage, position: localPos, AOE: node.AOERange)
     }
     
     //Does damage to a single tile, no AOE

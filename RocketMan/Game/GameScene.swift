@@ -50,14 +50,17 @@ class GameScene: SKScene {
     */
  
     override func didMove(to view: SKView){
+        preloadDequableNodes()
         addPlayableRect()
         addBackground()
-        addWorld()
+        initWorld()
+        initEnemies()
         addPlayer()
         addCamera()
     }
     
     //MARK: - Game update
+    
     override func update(_ currentTime: TimeInterval){
         if !isPaused{
             //Updates phase before Physics
@@ -68,8 +71,10 @@ class GameScene: SKScene {
         
             //Physics phase
             runPhysics()
+            
             checkWinCondition()
             checkLooseCondition()
+            updateEnemies()
             
             //Cleanup phase
             removeNodesOutsideView()
@@ -80,6 +85,7 @@ class GameScene: SKScene {
     func updateDt(_ currentTime: CFTimeInterval){
         if lastUpdateTime > 0{
             dt = currentTime-lastUpdateTime;
+            dt = dt > MAX_DT ? MAX_DT : dt
         }else{
             dt = 0;
         }
@@ -110,6 +116,12 @@ class GameScene: SKScene {
         playableRect = CGRect(x:0, y:playableMargin, width: size.width, height: playableHeight);
     }
     
+    func preloadDequableNodes(){
+        PlayerBulletNode.preloadReusableNodes(amount: 8)
+        MuzzleNode.preloadReusableNodes(amount: 2)
+        DestroyedTileNode.preloadReusableNodes(amount: 20)
+        Zombie.preloadReusableNodes(amount: 2)
+    }
     
     //Removes all nodes further out of viewable screen than REMOVE_NODES_DISTANCE
     func removeNodesOutsideView(){

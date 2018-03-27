@@ -36,5 +36,6 @@ class GameViewController: UIViewController {
         PlayerBulletNode.didReceiveMemoryWarning()
         DestroyedTileNode.didReceiveMemoryWarning()
         MuzzleNode.didReceiveMemoryWarning()
+        Zombie.didReceiveMemoryWarning()
     }
 }

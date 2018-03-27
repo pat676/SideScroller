@@ -9,7 +9,7 @@
 import SpriteKit
 
 class PhysicsNode: SKSpriteNode{
-    
+
     //MARK: - Game properties
     
     //The frame used for physics calculations
@@ -26,8 +26,6 @@ class PhysicsNode: SKSpriteNode{
     var isOnSolidGround = false
     
     //MARK: - Physics Engine Properties
-    
-    var hasPhysicsFrame = true
     
     override var position: CGPoint{
         willSet(newValue){
@@ -48,9 +46,10 @@ class PhysicsNode: SKSpriteNode{
             updatePhysicsFrameSize()
         }
     }
-    
-    var isAffectedByGravity = false; //Determines if the nodes velocity is updated with gravity
+
+    var isAffectedByGravity = false //Determines if the nodes velocity is updated with gravity
     var isAffectedByWorldSolids = true //Determines if collision check between node and world tiles are performed
+    var canCollideWithPhysicNodes = false //Determines if collision check between node and other physic nodes is performed
     
     //Sensor points are used for collision detetection. Should only be read throught the get___SensorPoints() methodes
     private var _leftSensorPoints = [CGPoint]()
@@ -68,16 +67,6 @@ class PhysicsNode: SKSpriteNode{
     
     override init(texture: SKTexture?, color: UIColor, size: CGSize) {
         super.init(texture: texture, color: color, size: size)
-    }
-    
-    convenience init(imageNamed: String, shouldHavePhysicsFrame:Bool = true){
-        let texture = SKTexture(imageNamed: imageNamed)
-        self.init(texture: texture, color: .clear, size: texture.size())
-        hasPhysicsFrame = shouldHavePhysicsFrame
-        if(hasPhysicsFrame){
-            physicsFrame = frame.scale(physicsFrameScale)
-            calculateSensorPoints()
-        }
     }
     
     //MARK: - Super util overrides
@@ -100,18 +89,30 @@ class PhysicsNode: SKSpriteNode{
     
     func didUpdatePhysics(){
         if(shouldDrawFrame) {drawFrame()}
-        if(shouldDrawPhysicsFrame && hasPhysicsFrame) {drawPhysicsFrame()}
-        if(shouldDrawSensorPoints && hasPhysicsFrame) {drawSensorPoints()}
+        if(shouldDrawPhysicsFrame) {drawPhysicsFrame()}
+        if(shouldDrawSensorPoints) {drawSensorPoints()}
     }
     
+    //MARK: - PhysicsNode Interactions
     
+    func collided(with node: PhysicsNode){}
+
     //MARK: - World Interactions
     
     //Called by the physics engine. WorldPosition coordinates are in the world frame!
-    func hitSolidLeft(at position: CGPoint){}
-    func hitSolidRight(at position: CGPoint){}
-    func hitSolidGround(at position: CGPoint){isOnSolidGround = true}
-    func hitSolidRoof(at position: CGPoint){}
+    func hitSolidLeft(at position: CGPoint){
+        if(isAffectedByWorldSolids){velocity.x = 0}
+    }
+    func hitSolidRight(at position: CGPoint){
+        if(isAffectedByWorldSolids){velocity.x = 0}
+    }
+    func hitSolidGround(at position: CGPoint){
+        isOnSolidGround = true
+        if(isAffectedByWorldSolids){velocity.y = 0}
+    }
+    func hitSolidRoof(at position: CGPoint){
+        if(isAffectedByWorldSolids){velocity.y = 0}
+    }
     
     
     //MARK: - physicsFrame
@@ -141,7 +142,7 @@ class PhysicsNode: SKSpriteNode{
      * The sensor points are ment to be used for world collision checks. The points given are relative to the physics frame
      * and should be added to the phyics frame offset(minX and minY) before use in world frame.
      */
-    private func calculateSensorPoints(){
+    func calculateSensorPoints(){
         _leftSensorPoints = [CGPoint]()
         _rightSensorPoints = [CGPoint]()
         _topSensorPoints = [CGPoint]()
@@ -222,6 +223,13 @@ class PhysicsNode: SKSpriteNode{
             bottomSensorPoints.append(CGPoint(x: physicsFrame.minX + point.x, y: physicsFrame.minY + point.y))
         }
         return bottomSensorPoints
+    }
+    
+    //MARK: - Util
+    
+    //Returns the center position of the frame
+    func centerPosition() -> CGPoint{
+        return CGPoint(x:position.x + frame.width/2, y: position.y + frame.height/2)
     }
     
     //MARK: - Debug
