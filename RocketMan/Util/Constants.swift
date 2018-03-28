@@ -16,7 +16,7 @@ let MAX_DT:TimeInterval = 1/30
 //WORLD CONSTANTS
 
 let GRAVITY: CGFloat = -1400
-let CAMERA_VELOCITY: CGFloat = 300
+let CAMERA_VELOCITY: CGFloat = 400
 let TILE_SIZE:CGFloat = 64 //Standard tile size
 let REMOVE_NODES_DISTANCE: CGFloat = 500 //Removes nodes when they are this distance outside viewable screen
 
@@ -36,7 +36,6 @@ let LEFT_SCREEN_AMOUNT: CGFloat = 0.2
 
 
 //PLAYER CONSTANTS
-let PLAYER_SIZE = CGSize(width: 150, height: 150)
 let PLAYER_MARGIN: CGFloat = 250 //The default distance to the left camera corner
 let PLAYER_VELOCITY_OFF_MARGIN_MUL: CGFloat = 0.3 //Velocity increase/decrease if the player is off margin
 let PLAYER_PHYSICS_FRAME_SCALE = CGPoint(x: 0.4, y: 0.8)
@@ -50,12 +49,10 @@ let PLAYER_BULLET_DAMAGE_TYPE:DamageType = .Piercing
 let PLAYER_BULLET_AOE_RANGE = CGPoint(x: 32, y: 32)
 let PLAYER_BULLET_AOE_DAMAGE:CGFloat = 100
 let PLAYER_BULLET_AOE_DAMAGE_TYPE:DamageType = .Explosion
-
-let PLAYER_MUZZLE_POSITION = CGPoint(x: 0.87, y: 0.5)
-let PLAYER_MUZZLE_SIZE = CGSize(width: 20, height: 70)
-let PLAYER_BULLET_SIZE = CGSize(width: 32, height: 32)
 let PLAYER_BULLET_PHYSICS_FRAME_SCALE = CGPoint(x: 0.8, y: 0.8)
 let PLAYER_BULLET_SPEED: CGFloat = 1500
+
+let PLAYER_MUZZLE_POSITION = CGPoint(x: 0.87, y: 0.5)
 
 //The time used to scale the bullet from 0 to bullet size when fired
 let PLAYER_BULLET_SCALE_DURATION:TimeInterval = 0.2
@@ -63,7 +60,6 @@ let PLAYER_BULLET_SCALE_DURATION:TimeInterval = 0.2
 let PLAYER_BULLET_START_POSITION = CGPoint(x: PLAYER_MUZZLE_POSITION.x - 0.15, y: PLAYER_MUZZLE_POSITION.y)
 
 //ZOMBIE CONSTANTS
-let ZOMBIE_SIZE = CGSize(width: 150, height: 150)
 let ZOMBIE_SPEED:CGFloat = 100;
 let ZOMBIE_PHYSICS_FRAME_SCALE = CGPoint(x: 0.4, y: 0.8)
 let ZOMBIE_VIEW_DISTANCE: CGFloat = 1500 

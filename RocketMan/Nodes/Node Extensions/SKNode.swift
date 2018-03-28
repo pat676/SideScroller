@@ -19,9 +19,9 @@ extension SKNode{
     //MARK: - Animations
     
     /*
-     * Creates a SKAction animation from textureAtlast with timePerFrame between each frame.
-     * textureAtlasName should be the same for the atlas and the png, but the pngs should ha numbers appended from 1 to
-     * the number of frames.
+     * Creates a SKAction animation from textureAtlast with timePerFrame between each frame. The can only contain images used in this animation.
+     * For atlases with unrealeted textures, use the createAnimtaion(with:animationNmae:timePrFrame) instead.
+     * All names used in the animation should start with animationName and end with #.png, where # is the frame number.
      */
     static func createAnimation(from textureAtlastName: String, timePerFrame: TimeInterval) -> SKAction{
         let atlas = SKTextureAtlas(named: textureAtlastName)
@@ -30,6 +30,31 @@ extension SKNode{
         for i in 1...atlas.textureNames.count{
             let textureName = "\(textureAtlastName)\(i)"
             animationFrames.append(atlas.textureNamed(textureName))
+        }
+        return SKAction.animate(with: animationFrames, timePerFrame: timePerFrame, resize: false, restore: true)
+    }
+    
+    /*
+     * Creates an animation from the given texture atlas.
+     * All names used in the animation should start with animationName and end with #.png, where # is the frame number.
+     */
+    static func createAnimation(from textureAtlas: SKTextureAtlas, animationName: String, timePerFrame: TimeInterval) -> SKAction{
+        
+        //Count the number of frames belonging to animation name
+        var textureCount = 0;
+        let name = "\(animationName)_"
+        for textureName in textureAtlas.textureNames{
+            if textureName.hasPrefix(name){
+                textureCount += 1
+            }
+        }
+        if(textureCount == 0){fatalError("Could not load animation: \(animationName)")}
+        
+        //Create animation
+        var animationFrames: [SKTexture] = []
+        for i in 1...textureCount{
+            let textureName = "\(name)\(i)"
+            animationFrames.append(textureAtlas.textureNamed(textureName))
         }
         return SKAction.animate(with: animationFrames, timePerFrame: timePerFrame, resize: false, restore: true)
     }

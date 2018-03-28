@@ -17,7 +17,7 @@ class DestroyedTileNode: PhysicsNode{
 
     //MARK: - System
     convenience init(){
-        self.init(imageNamed: "Ground Mid Mid")
+        self.init(imageNamed: "GroundMidMid1.png")
         name = "DestroyedTile"
         isAffectedByGravity = true
         isAffectedByWorldSolids = false

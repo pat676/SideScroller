@@ -17,6 +17,7 @@ class GameScene: SKScene {
     var player: PlayerNode!
     weak var tileMap: SKTileMapNode?
     var tileMapsHealth = [[CGFloat]]() // Keeps track of tile health
+    var gameOver = false
     
     //MARK: - Properties
     
@@ -50,6 +51,9 @@ class GameScene: SKScene {
     */
  
     override func didMove(to view: SKView){
+    }
+    
+    func setup(){
         preloadDequableNodes()
         addPlayableRect()
         addBackground()

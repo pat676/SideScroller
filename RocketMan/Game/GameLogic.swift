@@ -17,12 +17,15 @@ extension GameScene{
         if cameraPlayableRect.maxX >= tileMap!.frame.maxX - TILE_SIZE{
             isPaused = true
         }
+        gameOver = true
     }
     
     func checkLooseCondition(){
         if (player.frame.maxX < cameraPlayableRect.minX || player.frame.maxY < cameraPlayableRect.minY){
             isPaused = true
         }
+        
+        gameOver = true
     }
     
     //MARK: - Touches
@@ -30,6 +33,8 @@ extension GameScene{
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else {return}
         let touchLocation = touch.location(in: self)
+        
+        if(isPaused && !gameOver){isPaused = false}
         
         if(touchLocation.x < cameraPlayableRect.minX + LEFT_SCREEN_AMOUNT*cameraPlayableRect.width){
             if(!isPaused) {player.jump()}

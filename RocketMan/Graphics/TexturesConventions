@@ -1,0 +1,6 @@
+Naming Conventions:
+
+1. All animation names should start with the name of the sprite the animation belongs to
+2. All names belonging to the same animation should start with a common prefix and end with a underline (_) and then
+   a number from 1 to n where n is the number of textures in the animation
+

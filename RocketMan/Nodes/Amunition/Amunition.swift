@@ -29,9 +29,12 @@ class Amunition: PhysicsNode{
     
     convenience init(imageNamed: String){
         let texture = SKTexture(imageNamed: imageNamed)
-        self.init(texture: texture, color: .clear, size: PLAYER_SIZE)
-        isAffectedByGravity = true
+        self.init(texture: texture, color: .clear, size: texture.size())
+        
+        isAffectedByGravity = false
+        isAffectedByWorldSolids = true
         canCollideWithPhysicNodes = true
+        
         anchorPoint = CGPoint.zero
         zPosition = 10
     }
