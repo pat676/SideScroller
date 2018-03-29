@@ -31,9 +31,8 @@ class Amunition: PhysicsNode{
         let texture = SKTexture(imageNamed: imageNamed)
         self.init(texture: texture, color: .clear, size: texture.size())
         
-        isAffectedByGravity = false
         isAffectedByWorldSolids = true
-        canCollideWithPhysicNodes = true
+        isAffectedByPhysicNodes = true
         
         anchorPoint = CGPoint.zero
         zPosition = 10
@@ -52,18 +51,22 @@ class Amunition: PhysicsNode{
     
     override func hitSolidRoof(at position: CGPoint){
         super.hitSolidRoof(at: position)
+        self.position = position
         hitTarget()
     }
     override func hitSolidLeft(at position: CGPoint) {
         super.hitSolidLeft(at: position)
+        self.position = position
         hitTarget()
     }
     override func hitSolidGround(at position: CGPoint) {
         super.hitSolidGround(at: position)
+        self.position = position
         hitTarget()
     }
     override func hitSolidRight(at position: CGPoint) {
         super.hitSolidRight(at: position)
+        self.position = position
         hitTarget()
     }
     

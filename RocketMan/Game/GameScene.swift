@@ -17,7 +17,8 @@ class GameScene: SKScene {
     var player: PlayerNode!
     weak var tileMap: SKTileMapNode?
     var tileMapsHealth = [[CGFloat]]() // Keeps track of tile health
-    var gameOver = false
+    var textOverlayNode: SKSpriteNode?
+    
     
     //MARK: - Properties
     
@@ -33,15 +34,22 @@ class GameScene: SKScene {
     var lastUpdateTime: TimeInterval = 0;
     var dt: TimeInterval = 0;
     
+    //MARK: Game Logic Properties
+    var shouldPause = false //Used in update to fix a bug where game is resumed when reentering active state
     override var isPaused:Bool{
         willSet(newValue){
-            super.isPaused = newValue
             if(!newValue){
                 lastUpdateTime = 0;
                 dt = 0;
             }
         }
     }
+    var gameOver = false
+    
+    //Mark: - Enemies Properties
+    
+    var enemiesTileMap:SKTileMapNode!
+    var lastMaxColumnForEnemies: Int = 0
     
     //MARK: - System
     /*
@@ -51,33 +59,45 @@ class GameScene: SKScene {
     */
  
     override func didMove(to view: SKView){
+        NotificationCenter.default.addObserver(self, selector: #selector(setShouldPause), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
-    
+
+
     func setup(){
         preloadDequableNodes()
         addPlayableRect()
         addBackground()
         initWorld()
+        addCamera()
         initEnemies()
         addPlayer()
-        addCamera()
     }
     
     //MARK: - Game update
     
     override func update(_ currentTime: TimeInterval){
+        if(shouldPause){
+            pauseGame()
+            shouldPause = false;
+            return
+        }
+        
         if !isPaused{
             //Updates phase before Physics
             updateDt(currentTime)
-            background.update(to: camera!, sceneWidth: frame.width)
-            camera!.update(dt: dt)
-            player.update(in: cameraPlayableRect)
+            if(!gameOver){
+                background.update(to: camera!, sceneWidth: frame.width)
+                camera!.update(dt: dt)
+                player.update(in: cameraPlayableRect)
+            }
         
             //Physics phase
             runPhysics()
             
-            checkWinCondition()
-            checkLooseCondition()
+            if(!gameOver){
+                checkWinCondition()
+                checkLooseCondition()
+            }
             updateEnemies()
             
             //Cleanup phase
@@ -124,18 +144,6 @@ class GameScene: SKScene {
         PlayerBulletNode.preloadReusableNodes(amount: 8)
         MuzzleNode.preloadReusableNodes(amount: 2)
         DestroyedTileNode.preloadReusableNodes(amount: 20)
-        Zombie.preloadReusableNodes(amount: 2)
-    }
-    
-    //Removes all nodes further out of viewable screen than REMOVE_NODES_DISTANCE
-    func removeNodesOutsideView(){
-        for child in children{
-            if let node = child as? PhysicsNode{
-                if (node.position.x < cameraPlayableRect.minX - REMOVE_NODES_DISTANCE) || (node.position.x > cameraPlayableRect.maxX + REMOVE_NODES_DISTANCE) || (node.position.y < cameraPlayableRect.minY - REMOVE_NODES_DISTANCE) || (node.position.y > cameraPlayableRect.maxY + REMOVE_NODES_DISTANCE){
-                    node.removeFromParent()
-                }
-            }
-        }
     }
     
     //MARK: - DataStorage

@@ -12,10 +12,9 @@ class PlayerNode: Living{
     
     //MARK: - Properties
     
-    var canShoot: Bool{ get{ return currentAction == .Jumping || currentAction == .Moving} }
-    var canJump: Bool{ get{ return isOnSolidGround && (currentAction != .Jumping && currentAction != .JumpShooting)} }
+    var canShoot: Bool{get{ return !isDead && (currentAction == .Jumping || currentAction == .Moving)} }
+    var canJump: Bool{get{return !isDead && isOnSolidGround && (currentAction != .Jumping && currentAction != .JumpShooting)}}
     
-    var originalSize: CGSize!
     
     //MARK: - Animation Actions
     
@@ -24,23 +23,24 @@ class PlayerNode: Living{
     var landAnimation: SKAction!
     var jumpShootAnimation: SKAction!
     var runShootAnimation: SKAction!
+    var dyingAnimation: SKAction!
     
     //MARK: - System
     
     convenience init(playableRect: CGRect, playerMargin: CGFloat){
         self.init(imageNamed: "PlayerRun_1.png")
-        originalSize = size
-        //scale(to: PLAYER_SIZE)
+
+        zPosition = 100
         
         physicsFrameScale = PLAYER_PHYSICS_FRAME_SCALE
         position = CGPoint(x: playerMargin, y:playableRect.minY + TILE_SIZE + 500)
-        
         currentAction = .Moving
     }
     
     //MARK: - Update
     
     func update(in cameraPlayableRect: CGRect){
+        guard !isDead else {return}
         updatePlayerVelocity(in: cameraPlayableRect)
         if(!isOnSolidGround && currentAction != .Jumping && currentAction != .JumpShooting){
             //Fallen of a platform
@@ -50,6 +50,7 @@ class PlayerNode: Living{
     
     // Adjusts the velocity of the player. If the player is to far left/right the speed is increased/decreased
     func updatePlayerVelocity(in cameraPlayableRect: CGRect){
+        guard !isDead else {return}
         if(position.x < cameraPlayableRect.minX + PLAYER_MARGIN - 10){
             velocity.x = (1+PLAYER_VELOCITY_OFF_MARGIN_MUL) * CAMERA_VELOCITY
         }
@@ -71,11 +72,11 @@ class PlayerNode: Living{
         landAnimation = SKNode.createAnimation(from: atlas, animationName: "PlayerLand", timePerFrame: STANDARD_TIME_PER_FRAME)
         jumpShootAnimation = SKNode.createAnimation(from: atlas, animationName: "PlayerJumpShoot", timePerFrame: STANDARD_TIME_PER_FRAME)
         runShootAnimation = SKNode.createAnimation(from: atlas, animationName: "PlayerRunShoot", timePerFrame: STANDARD_TIME_PER_FRAME)
+        dyingAnimation = SKNode.createAnimation(from: atlas, animationName: "PlayerDead", timePerFrame: STANDARD_TIME_PER_FRAME)
     }
     
     override func updateAnimation(){
-        removeAllActions()
-        
+        super.updateAnimation()
         if(currentAction == .Moving){
             run(SKAction.repeatForever(runAnimation), withKey: "Animation")
         }
@@ -105,14 +106,31 @@ class PlayerNode: Living{
             let sequence = SKAction.sequence([runShootAnimation, completionAction])
             run(sequence, withKey: "Animation")
         }
+        else if(currentAction == .Dying){
+            texture = SKTexture(imageNamed: "PlayerDead_10.png")
+            run(dyingAnimation, withKey: "Animation")
+        }
     }
     
     //MARK: - World Interactions
     
     override func hitSolidGround(at position: CGPoint){
         super.hitSolidGround(at: position)
+        guard !isDead else {return}
         if(currentAction == .Jumping || currentAction == .JumpShooting){
             currentAction = .Landing
+        }
+    }
+    
+    //MARK: - PhysicsNode Interaction
+    
+    override func collided(with node: PhysicsNode){
+        guard !isDead else {return}
+        if let enemy = node as? Enemy{
+            guard !enemy.isDead else {return}
+            print(node)
+            let forceDirection = (self.position - enemy.position).normalized()
+            self.applyDamage(enemy.damage, pushback: enemy.pushback, forceDirection: forceDirection)
         }
     }
     
@@ -141,7 +159,13 @@ class PlayerNode: Living{
     
     func addMuzzle(){
         let muzzleNode = MuzzleNode.dequeReusableNode()
-        muzzleNode.position = CGPoint(x:originalSize.width*PLAYER_MUZZLE_POSITION.x , y:PLAYER_MUZZLE_POSITION.y*originalSize.height)
+        muzzleNode.position = CGPoint(x:size.width*PLAYER_MUZZLE_POSITION.x , y:PLAYER_MUZZLE_POSITION.y*size.height)
         self.addChild(muzzleNode)
+    }
+    
+    //MARK: - Damaged/ Killed
+    
+    override func killedAnimated(forceDirection: CGPoint) {
+        currentAction = .Dying
     }
 }

@@ -16,21 +16,30 @@ extension GameScene{
         }
         tileMap.anchorPoint = CGPoint.zero
         tileMap.position = CGPoint(x: 0, y: playableRect.minY)
-        addEnemiesFromPlaceholders(tileMap: tileMap)
+        enemiesTileMap = tileMap
+        updateEnemiesFromPlaceholders(tileMap: enemiesTileMap, extraColumns: 10)
     }
     
     func updateEnemies(){
+        updateEnemiesFromPlaceholders(tileMap: enemiesTileMap, extraColumns: 10)
         for node in children{
             guard let enemy = node as? Enemy else {continue}
             enemy.update(worldTiles: tileMap!, player: player)
         }
     }
     
+    
     //Mark: - Add Enemies
     
-    func addEnemiesFromPlaceholders(tileMap: SKTileMapNode){
+    //Removes placeholders and adds enemies in visible columns + extraCols
+    func updateEnemiesFromPlaceholders(tileMap: SKTileMapNode, extraColumns: Int){
+        var maxColumnForEnemies = (Int(cameraPlayableRect.maxX)/Int(TILE_SIZE)) + extraColumns
+        if (maxColumnForEnemies > enemiesTileMap.numberOfColumns){
+            maxColumnForEnemies = enemiesTileMap.numberOfColumns
+        }
+
         for row in 0..<tileMap.numberOfRows{
-            for column in 0..<tileMap.numberOfColumns{
+            for column in lastMaxColumnForEnemies..<maxColumnForEnemies{
                 if let tileDefinition = tileMap.getTileDefinition(row: row, column: column){
                     if tileDefinition.name == "Zombie"{
                         addZombie(tileMap: tileMap, row: row, column: column)
@@ -39,10 +48,12 @@ extension GameScene{
                 }
             }
         }
+        
+        lastMaxColumnForEnemies = maxColumnForEnemies
     }
     
     func addZombie(tileMap: SKTileMapNode, row: Int, column: Int){
-        let zombie = Zombie.dequeReusableNode()
+        let zombie = Zombie()
         zombie.position = CGPoint(x: CGFloat(column)*TILE_SIZE, y: CGFloat(row)*TILE_SIZE)
         zombie.position = convert(zombie.position, from: tileMap)
         addChild(zombie)

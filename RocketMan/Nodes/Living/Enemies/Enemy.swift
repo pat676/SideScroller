@@ -13,20 +13,21 @@ class Enemy: Living{
     
     //MARK: - Properties
     
-    var health: CGFloat = 1;
     var getVelocity = velocityAI.noVelocity //AI function for calculating velocity
     var viewDistance:CGFloat = 0 //Maximum distance the Zombie can detect the player
-    var isDead:Bool{
-        get{
-            return health < 0
-        }
-    }
+    var hasCloseAttack = false
+    var didHitPlayerLastFrame = false
+    
+    var damage:CGFloat = 1
+    var pushback:CGFloat = 0
     
     //MARK: - Update
     
     func update(worldTiles: SKTileMapNode, player: PlayerNode){
+        guard currentAction != .Dying else {return}
         runAI(worldTiles: worldTiles, player: player)
         updateAction()
+        didHitPlayerLastFrame = false
     }
     
     func runAI(worldTiles: SKTileMapNode, player: PlayerNode){
@@ -34,7 +35,13 @@ class Enemy: Living{
     }
     
     func updateAction(){
-        if(velocity == CGPoint.zero){
+        if(isDead){
+            currentAction = .Dying
+        }
+        else if(didHitPlayerLastFrame && hasCloseAttack){
+            currentAction = .CloseAttack
+        }
+        else if(velocity == CGPoint.zero){
             currentAction = .Idle
         }
         else{
@@ -45,20 +52,26 @@ class Enemy: Living{
     //MARK: - PhysicsNode interactions
     
     func directHit(by ammo: Amunition){
-        health -= ammo.damage
-        if(health < 0){
-            killed(by: ammo)
-        }
+        let damage = ammo.damage
+        let pushback = ammo.damagePushback
+        let direction = (self.position - ammo.position).normalized()
+        applyDamage(damage, pushback: pushback, direction: direction)
     }
     
     func AOEHit(by ammo: Amunition){
-        health -= ammo.AOEDamage
-        if(health < 0){
-            killed(by: ammo)
-        }
+        let damage = ammo.AOEDamage
+        let pushback = ammo.AOEDamagePushback
+        let direction = (self.position - ammo.position).normalized()
+        applyDamage(damage, pushback: pushback, direction: direction)
     }
     
-    func killed(by ammo: Amunition){
-        super.removeFromParent()
+    //MARK: - Apply Damage and Killed
+    
+    private func applyDamage(_ damage: CGFloat, pushback: CGFloat, direction: CGPoint){
+        guard health > 0 else {return}
+        health -= damage
+        if(health < 0){
+            killed(with: pushback, forceDirection: direction)
+        }
     }
 }

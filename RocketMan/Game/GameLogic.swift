@@ -15,17 +15,14 @@ extension GameScene{
     //Game is won when camera.maxX has reached the edge of the til map
     func checkWinCondition(){
         if cameraPlayableRect.maxX >= tileMap!.frame.maxX - TILE_SIZE{
-            isPaused = true
+            gameWon()
         }
-        gameOver = true
     }
     
     func checkLooseCondition(){
-        if (player.frame.maxX < cameraPlayableRect.minX || player.frame.maxY < cameraPlayableRect.minY){
-            isPaused = true
-        }
-        
-        gameOver = true
+        if (player.isDead || player.frame.maxX < cameraPlayableRect.minX || player.frame.maxY < cameraPlayableRect.minY){
+            gameLost()
+        }        
     }
     
     //MARK: - Touches
@@ -33,10 +30,13 @@ extension GameScene{
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else {return}
         let touchLocation = touch.location(in: self)
-        
-        if(isPaused && !gameOver){isPaused = false}
-        
-        if(touchLocation.x < cameraPlayableRect.minX + LEFT_SCREEN_AMOUNT*cameraPlayableRect.width){
+        if(isPaused && !gameOver){
+            resumeGame()
+        }
+        else if(gameOver){
+            returnToMainMenu()
+        }
+        else if(touchLocation.x < cameraPlayableRect.minX + LEFT_SCREEN_AMOUNT*cameraPlayableRect.width){
             if(!isPaused) {player.jump()}
         }
         else{
@@ -52,5 +52,83 @@ extension GameScene{
             bullet?.zRotation = atan2(bulletDirection.y, bulletDirection.x)
             addChild(bullet!)
         }
+    }
+    
+    //Removes all nodes further out of viewable screen than REMOVE_NODES_DISTANCE
+    func removeNodesOutsideView(){
+        for child in children{
+            if let node = child as? PhysicsNode{
+                if (node.position.x < cameraPlayableRect.minX - REMOVE_NODES_DISTANCE) || (node.position.x > cameraPlayableRect.maxX + REMOVE_NODES_DISTANCE) || (node.position.y < cameraPlayableRect.minY - REMOVE_NODES_DISTANCE) || (node.position.y > cameraPlayableRect.maxY + REMOVE_NODES_DISTANCE){
+                    node.removeFromParent()
+                }
+            }
+        }
+    }
+    
+    //MARK: - Pause Game
+    
+    //Used to fix a bug where the game resumes when resuming from background
+    @objc func setShouldPause(){
+        shouldPause = true
+    }
+    
+    func pauseGame(){
+        presentTextOverlayNode(title: "Game Paused!", subtitle: "Touch the screen to resume...")
+        isPaused = true
+    }
+    
+    func resumeGame(){
+        textOverlayNode?.removeFromParent()
+        isPaused = false
+    }
+    
+    //MARK: - Game Over
+    
+    func gameWon(){
+        gameOver = true
+        isPaused = true
+        presentTextOverlayNode(title: "You Won!", subtitle: "Touch the screen to return to main menu...")
+    }
+    
+    func gameLost(){
+        gameOver = true
+        presentTextOverlayNode(title: "You Lost!", subtitle: "Touch the screen to return to main menu...")
+    }
+    
+    //MARK: - Util
+    
+    func returnToMainMenu(){
+        let scene = LoadingScene(size: CGSize(width: 2048, height: 1536))
+        view?.presentScene(scene);
+    }
+    
+    func presentTextOverlayNode(title: String, subtitle: String){
+        if(textOverlayNode != nil){
+            textOverlayNode!.removeFromParent()
+            textOverlayNode = nil
+        }
+        
+        textOverlayNode = SKSpriteNode(texture: nil, color: .black, size: cameraPlayableRect.size)
+        textOverlayNode!.position.x = cameraPlayableRect.minX + cameraPlayableRect.width/2
+        textOverlayNode!.position.y = cameraPlayableRect.minY + cameraPlayableRect.height/2
+        textOverlayNode!.alpha = 0.5
+        textOverlayNode!.zPosition = 1000
+        addChild(textOverlayNode!)
+        
+        let titleNode = SKLabelNode()
+        titleNode.fontName = "Chalkduster"
+        titleNode.fontColor = .white
+        titleNode.fontSize = 150
+        titleNode.position.y = 50
+        titleNode.text = title
+        textOverlayNode!.addChild(titleNode)
+        
+        let subtitleNode = SKLabelNode()
+        subtitleNode.fontName = "Chalkduster"
+        subtitleNode.fontColor = .white
+        subtitleNode.fontSize = 75
+        subtitleNode.position.y = -80
+        subtitleNode.text = subtitle
+        textOverlayNode!.addChild(subtitleNode)
     }
 }

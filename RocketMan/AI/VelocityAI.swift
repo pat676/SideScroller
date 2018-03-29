@@ -22,7 +22,11 @@ class VelocityAI{
     //Moves the enemy towards the player in the x direction if inside view distance 
     func simpleVelocity(for enemy: Enemy, player: PlayerNode, worldTiles: SKTileMapNode) -> CGPoint{
         let playerOffsetX = player.position.x - enemy.position.x
-        if(abs(playerOffsetX) < enemy.viewDistance){
+        if(player.physicsFrame.intersects(enemy.physicsFrame)){
+            enemy.didHitPlayerLastFrame = true
+            return CGPoint(x: 0, y: enemy.velocity.y)
+        }
+        else if(abs(playerOffsetX) < enemy.viewDistance){
             if(playerOffsetX < 0){ return CGPoint(x: -enemy.speed , y:enemy.velocity.y)}
             else if(playerOffsetX > 0) {return CGPoint(x: enemy.speed, y:enemy.velocity.y)}
         }

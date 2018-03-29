@@ -12,8 +12,12 @@ class Zombie: Enemy{
     
     //MARK: - Properties
     
-    var idleAction: SKAction!
-    var walkAction: SKAction!
+    var idleAnimation: SKAction!
+    var walkAnimation: SKAction!
+    var attackAnimation: SKAction!
+    var deathAnimation: SKAction!
+
+    var bloodEmitter: SKEmitterNode?
     
     //MARK: - System
     
@@ -24,61 +28,64 @@ class Zombie: Enemy{
         physicsFrameScale = ZOMBIE_PHYSICS_FRAME_SCALE
         
         speed = ZOMBIE_SPEED
+        damage = ZOMBIE_DAMAGE
+        pushback = ZOMBIE_PUSHBACK
+        
         viewDistance = ZOMBIE_VIEW_DISTANCE
         getVelocity = velocityAI.simpleVelocity
-    }
-    
-    static func didReceiveMemoryWarning(){
-        _reusableNodes.reset()
+        hasCloseAttack = true
+        zPosition = 101
     }
     
     //MARK: - Animations
     
     override func addAnimations(){
         let atlas = textureAtlasManager.zombieAtlas
-        idleAction = SKNode.createAnimation(from: atlas, animationName: "ZombieIdle", timePerFrame: ZOMBIE_IDLE_TIME_PER_FRAME)
-        walkAction = SKNode.createAnimation(from: atlas, animationName: "ZombieWalk", timePerFrame: ZOMBIE_MOVE_TIME_PER_FRAME)
+        idleAnimation = SKNode.createAnimation(from: atlas, animationName: "ZombieIdle", timePerFrame: ZOMBIE_IDLE_TIME_PER_FRAME)
+        walkAnimation = SKNode.createAnimation(from: atlas, animationName: "ZombieWalk", timePerFrame: ZOMBIE_MOVE_TIME_PER_FRAME)
+        attackAnimation = SKNode.createAnimation(from: atlas, animationName: "ZombieAttack", timePerFrame: ZOMBIE_MOVE_TIME_PER_FRAME)
+        deathAnimation = SKNode.createAnimation(from: atlas, animationName: "ZombieDead", timePerFrame: ZOMBIE_MOVE_TIME_PER_FRAME)
     }
     
     override func updateAnimation() {
         super.updateAnimation()
         if(currentAction == .Idle){
-            run(SKAction.repeatForever(idleAction))
+            removeBloodEmitter()
+            run(SKAction.repeatForever(idleAnimation), withKey: "Animation")
         }
         else if(currentAction == .Moving){
-            run(SKAction.repeatForever(walkAction))
+            removeBloodEmitter()
+            run(SKAction.repeatForever(walkAnimation), withKey: "Animation")
+        }
+        else if(currentAction == .CloseAttack){
+            addBloodEmitter()
+            run(SKAction.repeatForever(attackAnimation), withKey: "Animation")
+        }
+        else if(currentAction == .Dying){
+            let removeAction = SKAction.customAction(withDuration: 0){_,_ in self.removeFromParent()}
+            let sequence = SKAction.sequence([deathAnimation, removeAction])
+            run(sequence, withKey:"Animation")
         }
     }
     
-    //MARK: - Reusable Nodes
-    
-    private static var _reusableNodes = ReusableNodes<Zombie>(label: "EnemyNodeQueue")
-    
-    static func dequeReusableNode() -> Zombie{
-        var node: Zombie! = _reusableNodes.deque()
-        if(node == nil || node.parent != nil){
-            node = Zombie()
+    func addBloodEmitter(){
+        if(bloodEmitter == nil){
+            bloodEmitter = newBloodEmitter()
         }
-
-        node.currentAction = .Idle
-        node.updateAnimation()
-        return node
+        guard bloodEmitter != nil else {return}
+        bloodEmitter!.position.x = size.width * ZOMBIE_BLOOD_POSITION.x
+        bloodEmitter!.position.y = size.height * ZOMBIE_BLOOD_POSITION.y
+        bloodEmitter!.zPosition = -1
+        addChild(bloodEmitter!)
     }
     
-    static func queueReusableNode(_ node: Zombie){
-        node.removeAllActions()
-        _reusableNodes.queue(node)
+    func removeBloodEmitter(){
+        bloodEmitter?.removeFromParent()
     }
     
-    static func preloadReusableNodes(amount: Int){
-        for _ in 0..<amount{
-            let node = Zombie();
-            queueReusableNode(node)
-        }
-    }
+    //MARK: - Death
     
-    override func removeFromParent() {
-        super.removeFromParent()
-        Zombie.queueReusableNode(self)
+    override func killedAnimated(forceDirection: CGPoint) {
+        currentAction = .Dying
     }
 }

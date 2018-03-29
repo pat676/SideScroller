@@ -10,6 +10,13 @@ import SpriteKit
 
 class PhysicsNode: SKSpriteNode{
 
+    //MARK: - Static properties
+    
+    //Arrays used by the physics engine. Only nodes with a parent are added to theese arrays.
+    private static var allNodes = [PhysicsNode]()
+    private static var nodesAffectedByGravity = [PhysicsNode]()
+    private static var nodesAffectedByPhysicNodes = [PhysicsNode]()
+    
     //MARK: - Game properties
     
     //The frame used for physics calculations
@@ -21,22 +28,25 @@ class PhysicsNode: SKSpriteNode{
         }
     }
     var shouldUpdateSensorPoints = false; //If true the sensor points are updated next time the getSensorPoints methodes are called
-    var shouldUpdatePhysicsFrameSize = true; //Setting this to false will keep the physicsFrameSize from updating when frame size updates
     var velocity = CGPoint.zero
     var isOnSolidGround = false
     
     //MARK: - Physics Engine Properties
     
     override var position: CGPoint{
-        willSet(newValue){
-            super.position = newValue
+        didSet(oldValue){
             updatePhysicsFramePosition()
         }
     }
     override var size: CGSize{
-        willSet(newValue){
-            super.size = newValue
+        didSet(oldValue){
             updatePhysicsFrameSize()
+        }
+    }
+    
+    override var anchorPoint: CGPoint{
+        didSet(oldValue){
+            updatePhysicsFramePosition()
         }
     }
     
@@ -46,16 +56,42 @@ class PhysicsNode: SKSpriteNode{
             updatePhysicsFrameSize()
         }
     }
-
-    var isAffectedByGravity = false //Determines if the nodes velocity is updated with gravity
-    var isAffectedByWorldSolids = true //Determines if collision check between node and world tiles are performed
-    var canCollideWithPhysicNodes = false //Determines if collision check between node and other physic nodes is performed
+    
+    //Used to temporarily store collisions untill collisions are resolved by physics engine
+    var collidingNodes = [PhysicsNode]()
+    
+    //Rotates the sprite for continuesRotationAngle each second and stops after continuesRoationTime seconds
+    var continuesRotationAngle:CGFloat = 0;
+    var continuesRotationTime:TimeInterval = 0;
+    
+    var gravitationMultiplier:CGFloat = 1
+    
+    //MARK: - Interaction Properties
+    
+    //Determines if the nodes velocity is updated with gravity
+    var isAffectedByGravity = false{
+        didSet(oldValue){
+            updateNodesAffectedByGravity()
+        }
+    }
+    
+    //Determines if collision check between node and world tiles are performed
+    var isAffectedByWorldSolids = false
+    
+    //Determines if collision check between node and other physic nodes is performed
+    var isAffectedByPhysicNodes = false{
+        didSet(oldValue){
+            updateNodesAffectedByPhysicNodes()
+        }
+    }
     
     //Sensor points are used for collision detetection. Should only be read throught the get___SensorPoints() methodes
     private var _leftSensorPoints = [CGPoint]()
     private var _rightSensorPoints = [CGPoint]()
     private var _bottomSensorPoints = [CGPoint]()
     private var _topSensorPoints = [CGPoint]()
+    
+    private var _oldParent: SKNode? // Used in willUpdatePhysics and removeFromParent() to check for changed parent
     
     //MARK: - Debug properties
     
@@ -84,6 +120,9 @@ class PhysicsNode: SKSpriteNode{
     //MARK: - Update
 
     func willUpdatePhysics(){
+        if(parent != _oldParent){
+            changedParent()
+        }
         isOnSolidGround = false //Will be set in hitSolidGroundMethode()
     }
     
@@ -91,6 +130,14 @@ class PhysicsNode: SKSpriteNode{
         if(shouldDrawFrame) {drawFrame()}
         if(shouldDrawPhysicsFrame) {drawPhysicsFrame()}
         if(shouldDrawSensorPoints) {drawSensorPoints()}
+    }
+    
+    //Called buy willUpdatePhysics() and removeFromParent() when parent changes
+    private func changedParent(){
+        updateNodesAffectedByGravity()
+        updateNodesAffectedByPhysicNodes()
+        updateAllNodes()
+        _oldParent = parent
     }
     
     //MARK: - PhysicsNode Interactions
@@ -125,7 +172,6 @@ class PhysicsNode: SKSpriteNode{
     
     //Updates the size of the physicsFrame in by using the frame parameter
     func updatePhysicsFrameSize(){
-        guard shouldUpdatePhysicsFrameSize else {return}
         physicsFrame = frame.scale(physicsFrameScale)
     }
     
@@ -225,6 +271,65 @@ class PhysicsNode: SKSpriteNode{
         return bottomSensorPoints
     }
     
+    //MARK: - Static Arrays Functionallity
+    
+    static func getAllNodes() -> [PhysicsNode]{
+        return allNodes
+    }
+    
+    static func getNodesAffectedByGravity() -> [PhysicsNode]{
+        return nodesAffectedByGravity
+    }
+    
+    static func getNodesAffectedByPhysicNodes() -> [PhysicsNode]{
+        return nodesAffectedByPhysicNodes
+    }
+    
+    /*
+     * Adds node to allNodes array if node has a parent, else node is removed from array. A check is performed to make
+     * sure that the node isn't added to the array multiple times.
+     */
+    private func updateAllNodes(){
+        if(parent != nil && !PhysicsNode.allNodes.contains(self)){
+            PhysicsNode.allNodes.append(self)
+        }
+        else{
+            if let index = PhysicsNode.allNodes.index(of: self){
+                PhysicsNode.allNodes.remove(at: index)
+            }
+        }
+    }
+
+    /*
+     * Adds node to nodesAffectedByGravity array if node has a parent and isAffectedByGravity == true, else node is removed
+     * from array. A check is performed to make sure that the node isn't added to the array multiple times.
+     */
+    private func updateNodesAffectedByGravity(){
+        if(parent != nil && isAffectedByGravity && !PhysicsNode.nodesAffectedByGravity.contains(self)){
+            PhysicsNode.nodesAffectedByGravity.append(self)
+        }
+        else{
+            if let index = PhysicsNode.nodesAffectedByGravity.index(of: self){
+                PhysicsNode.nodesAffectedByGravity.remove(at: index)
+            }
+        }
+    }
+    
+    /*
+     * Adds node to nodesAffectedByPhysicNodes array if node has a parent and isAffectedByPhysicsNode == true, else node
+     * is removedfrom array. A check is performed to make sure that the node isn't added to the array multiple times.
+     */
+    private func updateNodesAffectedByPhysicNodes(){
+        if(parent != nil && isAffectedByPhysicNodes && !PhysicsNode.nodesAffectedByPhysicNodes.contains(self)){
+            PhysicsNode.nodesAffectedByPhysicNodes.append(self)
+        }
+        else{
+            if let index = PhysicsNode.nodesAffectedByPhysicNodes.index(of: self){
+                PhysicsNode.nodesAffectedByPhysicNodes.remove(at: index)
+            }
+        }
+    }
+    
     //MARK: - Util
     
     //Returns the center position of the frame
@@ -292,6 +397,7 @@ class PhysicsNode: SKSpriteNode{
         _lastPhysicsFrameNode?.removeFromParent()
         _lastSensorPointNode?.removeFromParent()
         super.removeFromParent()
+        changedParent()
     }
     
     //MARK: - Data Storage

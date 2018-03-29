@@ -19,7 +19,7 @@
 		CD1D199A2068DF9B009E17E2 /* Enemies Ideas in Resources */ = {isa = PBXBuildFile; fileRef = CD1D19992068DF9B009E17E2 /* Enemies Ideas */; };
 		CD4CB5F0206BEB9500662AAC /* Player@2x.atlas in Resources */ = {isa = PBXBuildFile; fileRef = CD4CB5EF206BEB9500662AAC /* Player@2x.atlas */; };
 		CD4CB60F206BF21900662AAC /* GroundSummer@2x.atlas in Resources */ = {isa = PBXBuildFile; fileRef = CD4CB60E206BF21900662AAC /* GroundSummer@2x.atlas */; };
-		CD517A39206903D70016BCA6 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CD517A38206903D60016BCA6 /* Default-568h@2x.png */; };
+		CD4CB614206D490A00662AAC /* Blood.sks in Resources */ = {isa = PBXBuildFile; fileRef = CD4CB612206D490A00662AAC /* Blood.sks */; };
 		CD57A4D820583DEE003DF1D4 /* SKCameraNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57A4D720583DEE003DF1D4 /* SKCameraNode.swift */; };
 		CD57A4DA20584104003DF1D4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57A4D920584104003DF1D4 /* Constants.swift */; };
 		CD57A4DF20598D50003DF1D4 /* WorldTiles.sks in Resources */ = {isa = PBXBuildFile; fileRef = CD57A4DE20598D50003DF1D4 /* WorldTiles.sks */; };
@@ -34,7 +34,6 @@
 		CD57A51B205B0322003DF1D4 /* CGRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD57A51A205B0322003DF1D4 /* CGRect.swift */; };
 		CD69531F205D9E5B0032DE97 /* PlayerBulletNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD69531E205D9E5B0032DE97 /* PlayerBulletNode.swift */; };
 		CD713FAE206A71DA00D452C1 /* EnemyPlaceholders.sks in Resources */ = {isa = PBXBuildFile; fileRef = CD713FAC206A71DA00D452C1 /* EnemyPlaceholders.sks */; };
-		CD713FAF206A71DA00D452C1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CD713FAD206A71DA00D452C1 /* Assets.xcassets */; };
 		CD713FB5206A750200D452C1 /* Zombie@2x.atlas in Resources */ = {isa = PBXBuildFile; fileRef = CD713FB1206A750200D452C1 /* Zombie@2x.atlas */; };
 		CD713FBA206A78AB00D452C1 /* Enemies.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD713FB9206A78AB00D452C1 /* Enemies.swift */; };
 		CD713FBF206A86BF00D452C1 /* VelocityAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD713FBE206A86BF00D452C1 /* VelocityAI.swift */; };
@@ -47,7 +46,7 @@
 		CD85A59D206A68B400211FE8 /* Zombie.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD85A59C206A68B400211FE8 /* Zombie.swift */; };
 		CDA4286520643884002836CA /* AlternativeMovementCollision.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA4286420643884002836CA /* AlternativeMovementCollision.swift */; };
 		CDA42868206451C3002836CA /* ExplosionFire.sks in Resources */ = {isa = PBXBuildFile; fileRef = CDA42866206451C3002836CA /* ExplosionFire.sks */; };
-		CDA42869206451C3002836CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDA42867206451C3002836CA /* Assets.xcassets */; };
+		CDA42869206451C3002836CA /* Emitters.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CDA42867206451C3002836CA /* Emitters.xcassets */; };
 		CDA4287020645C15002836CA /* ExplosionSmoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = CDA4286E20645C15002836CA /* ExplosionSmoke.sks */; };
 		CDB529EF206306BD00DFE983 /* SKTileMapNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB529EE206306BD00DFE983 /* SKTileMapNode.swift */; };
 		CDCC43CA2067C24A00A5E2DE /* Amunition.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDCC43C92067C24A00A5E2DE /* Amunition.swift */; };
@@ -71,7 +70,7 @@
 		CD1D19992068DF9B009E17E2 /* Enemies Ideas */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Enemies Ideas"; sourceTree = "<group>"; };
 		CD4CB5EF206BEB9500662AAC /* Player@2x.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = "Player@2x.atlas"; sourceTree = "<group>"; };
 		CD4CB60E206BF21900662AAC /* GroundSummer@2x.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = "GroundSummer@2x.atlas"; sourceTree = "<group>"; };
-		CD517A38206903D60016BCA6 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		CD4CB612206D490A00662AAC /* Blood.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Blood.sks; sourceTree = "<group>"; };
 		CD57A4D720583DEE003DF1D4 /* SKCameraNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKCameraNode.swift; sourceTree = "<group>"; };
 		CD57A4D920584104003DF1D4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CD57A4DE20598D50003DF1D4 /* WorldTiles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = WorldTiles.sks; sourceTree = "<group>"; };
@@ -86,7 +85,6 @@
 		CD57A51A205B0322003DF1D4 /* CGRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGRect.swift; sourceTree = "<group>"; };
 		CD69531E205D9E5B0032DE97 /* PlayerBulletNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerBulletNode.swift; sourceTree = "<group>"; };
 		CD713FAC206A71DA00D452C1 /* EnemyPlaceholders.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = EnemyPlaceholders.sks; sourceTree = "<group>"; };
-		CD713FAD206A71DA00D452C1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CD713FB1206A750200D452C1 /* Zombie@2x.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = "Zombie@2x.atlas"; sourceTree = "<group>"; };
 		CD713FB9206A78AB00D452C1 /* Enemies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemies.swift; sourceTree = "<group>"; };
 		CD713FBE206A86BF00D452C1 /* VelocityAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VelocityAI.swift; sourceTree = "<group>"; };
@@ -99,7 +97,7 @@
 		CD85A59C206A68B400211FE8 /* Zombie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Zombie.swift; sourceTree = "<group>"; };
 		CDA4286420643884002836CA /* AlternativeMovementCollision.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeMovementCollision.swift; sourceTree = "<group>"; };
 		CDA42866206451C3002836CA /* ExplosionFire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ExplosionFire.sks; sourceTree = "<group>"; };
-		CDA42867206451C3002836CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CDA42867206451C3002836CA /* Emitters.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Emitters.xcassets; sourceTree = "<group>"; };
 		CDA4286E20645C15002836CA /* ExplosionSmoke.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ExplosionSmoke.sks; sourceTree = "<group>"; };
 		CDB529EE206306BD00DFE983 /* SKTileMapNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKTileMapNode.swift; sourceTree = "<group>"; };
 		CDCC43C92067C24A00A5E2DE /* Amunition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amunition.swift; sourceTree = "<group>"; };
@@ -185,7 +183,6 @@
 				CD57A4DE20598D50003DF1D4 /* WorldTiles.sks */,
 				CD713FAC206A71DA00D452C1 /* EnemyPlaceholders.sks */,
 				CD57A4E020598F77003DF1D4 /* WorldScene.sks */,
-				CD713FAD206A71DA00D452C1 /* Assets.xcassets */,
 			);
 			path = Levels;
 			sourceTree = "<group>";
@@ -198,7 +195,6 @@
 				CD713FB1206A750200D452C1 /* Zombie@2x.atlas */,
 				CD4CB60E206BF21900662AAC /* GroundSummer@2x.atlas */,
 				CD00CA0F205707EE008E0A75 /* Assets.xcassets */,
-				CD517A38206903D60016BCA6 /* Default-568h@2x.png */,
 			);
 			path = Graphics;
 			sourceTree = "<group>";
@@ -289,7 +285,8 @@
 				CDA42866206451C3002836CA /* ExplosionFire.sks */,
 				CDA4286E20645C15002836CA /* ExplosionSmoke.sks */,
 				CD1D198E206843D4009E17E2 /* DustBrown.sks */,
-				CDA42867206451C3002836CA /* Assets.xcassets */,
+				CD4CB612206D490A00662AAC /* Blood.sks */,
+				CDA42867206451C3002836CA /* Emitters.xcassets */,
 			);
 			path = Effects;
 			sourceTree = "<group>";
@@ -356,19 +353,18 @@
 				CD57A4DF20598D50003DF1D4 /* WorldTiles.sks in Resources */,
 				CD57A4E120598F77003DF1D4 /* WorldScene.sks in Resources */,
 				CD00CA0E205707EE008E0A75 /* Main.storyboard in Resources */,
-				CDA42869206451C3002836CA /* Assets.xcassets in Resources */,
+				CDA42869206451C3002836CA /* Emitters.xcassets in Resources */,
 				CD1D198F206843D4009E17E2 /* DustBrown.sks in Resources */,
 				CDA42868206451C3002836CA /* ExplosionFire.sks in Resources */,
 				CD713FAE206A71DA00D452C1 /* EnemyPlaceholders.sks in Resources */,
 				CDA4287020645C15002836CA /* ExplosionSmoke.sks in Resources */,
-				CD517A39206903D70016BCA6 /* Default-568h@2x.png in Resources */,
+				CD4CB614206D490A00662AAC /* Blood.sks in Resources */,
 				CD00CA10205707EE008E0A75 /* Assets.xcassets in Resources */,
 				CD1D199A2068DF9B009E17E2 /* Enemies Ideas in Resources */,
 				CD713FB5206A750200D452C1 /* Zombie@2x.atlas in Resources */,
 				CD4CB60F206BF21900662AAC /* GroundSummer@2x.atlas in Resources */,
 				CD4CB5F0206BEB9500662AAC /* Player@2x.atlas in Resources */,
 				CD00CA13205707EE008E0A75 /* LaunchScreen.storyboard in Resources */,
-				CD713FAF206A71DA00D452C1 /* Assets.xcassets in Resources */,
 				CD713FC9206B9B5A00D452C1 /* TexturesConventions in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

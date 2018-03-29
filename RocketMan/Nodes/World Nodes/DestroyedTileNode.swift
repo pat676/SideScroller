@@ -19,8 +19,8 @@ class DestroyedTileNode: PhysicsNode{
     convenience init(){
         self.init(imageNamed: "GroundMidMid1.png")
         name = "DestroyedTile"
+        
         isAffectedByGravity = true
-        isAffectedByWorldSolids = false
 
         size = CGSize(width: TILE_SIZE*DESTROYED_TILE_SIZE_MULTIPLIER, height: TILE_SIZE*DESTROYED_TILE_SIZE_MULTIPLIER);
         randomVelocity(max: DESTROYED_TILE_MAX_VELOCITY)

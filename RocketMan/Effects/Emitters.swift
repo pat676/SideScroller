@@ -38,3 +38,8 @@ func newDustBrown() -> SKEmitterNode?{
     return dustBrown
 }
 
+func newBloodEmitter() -> SKEmitterNode?{
+    guard let blood = SKEmitterNode(fileNamed: "Blood.sks") else {return nil}
+    return blood
+}
+
