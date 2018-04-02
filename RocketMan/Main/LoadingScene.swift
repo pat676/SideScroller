@@ -10,17 +10,65 @@ import SpriteKit
 
 class LoadingScene: SKScene{
     
+    //MARK: - Properties
+    
     var gameScene: GameScene!
     var textNode: SKNode!
     var titleNode: SKLabelNode!
     var subtitleNode: SKLabelNode!
+    var loadingStage = 0
+    
+    //MARK: - System
     
     override func didMove(to view: SKView){
         scaleMode = .aspectFill
         addBackground()
         addText()
-        preloadTextureAtlases()
     }
+    
+    override func willMove(from view: SKView) {
+        gameScene = nil
+        textNode = nil
+        titleNode = nil
+        subtitleNode = nil
+        for node in children{
+            node.removeAllActions()
+            node.removeFromParent()
+        }
+    }
+    
+    override func update(_ currentTime: TimeInterval) {
+        if(loadingStage == 0){
+            subtitleNode.text = "Initializing scene"
+            guard let scene = GameScene(fileNamed: "WorldScene") else{fatalError("Could not open world scene")}
+            gameScene = scene
+            gameScene.scaleMode = .aspectFill
+        }
+        else if(loadingStage == 1){
+            subtitleNode.text = "Loading Nodes"
+            gameScene.resetDequableNodes()
+            gameScene.preloadDequableNodes()
+        }
+        else if(loadingStage == 2){
+            subtitleNode.text = "Loading Game World"
+            gameScene.addPlayableRect()
+            gameScene.addBackground()
+            gameScene.initWorld()
+            gameScene.addCamera()
+        }
+        else if(loadingStage == 3){
+            subtitleNode.text = "Adding Enemies"
+            gameScene.initEnemies()
+            gameScene.addPlayer()
+        }
+        else if(loadingStage == 4){
+            subtitleNode.text = "Loading finished"
+            presentGameScene()
+        }
+        loadingStage += 1
+    }
+    
+    //MARK: - Design
     
     func addBackground(){
         let background = SKSpriteNode(imageNamed: "LoadingScreen")
@@ -52,21 +100,7 @@ class LoadingScene: SKScene{
         addChild(textNode)
     }
     
-    func preloadTextureAtlases(){
-        subtitleNode.text = "Loading textures"
-        var atlases = textureAtlasManager.level1Atlases
-        atlases.append(textureAtlasManager.playerAtlas)
-        SKTextureAtlas.preloadTextureAtlases(atlases){self.setUpGameScene()}
-    }
-    
-    func setUpGameScene(){
-        subtitleNode.text = "Initializing scene"
-        guard let scene = GameScene(fileNamed: "WorldScene") else{fatalError("Could not open world scene")}
-        scene.scaleMode = .aspectFill
-        scene.setup()
-        gameScene = scene
-        presentGameScene()
-    }
+    //MARK: - Load GameScene
     
     func presentGameScene(){
         let transition = SKTransition.fade(withDuration: 1.5);

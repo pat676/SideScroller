@@ -23,6 +23,7 @@ class GameViewController: UIViewController {
         skView.showsFPS = true
         skView.showsNodeCount = true
         skView.ignoresSiblingOrder = true
+        skView.showsPhysics = false
         skView.presentScene(scene)
     }
 
@@ -35,8 +36,13 @@ class GameViewController: UIViewController {
     }
     
     override func didReceiveMemoryWarning(){
-        PlayerBulletNode.didReceiveMemoryWarning()
-        DestroyedTileNode.didReceiveMemoryWarning()
-        MuzzleNode.didReceiveMemoryWarning()
+        PlayerBulletNode.resetReusableNodes()
+        ExplosionFire.resetReusableNodes()
+        ExplosionSmoke.resetReusableNodes()
+        DustBrown.resetReusableNodes()
+        BloodEmitter.resetReusableNodes()
+        MuzzleNode.resetReusableNodes()
+        DestroyedTileNode.resetReusableNodes()
+        PhysicsNode.resetStaticArrays()
     }
 }

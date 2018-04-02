@@ -10,25 +10,22 @@ import SpriteKit
 
 class MuzzleNode: SKSpriteNode{
     
-    var muzzleAnimation: SKAction!
-        
     //MARK: - System
     convenience init(){
         self.init(imageNamed: "PlayerMuzzle_1.png")
 
         name = "PlayerMuzzle"
         
-        addAnimation()
         updateAnimation()
-    }
-    
-    static func didReceiveMemoryWarning(){
-        _reusableNodes.reset()
     }
     
     //MARK: - ReusableNodes
     
     private static var _reusableNodes = ReusableNodes<MuzzleNode>(label: "MuzzleNodeQueue")
+    
+    static func resetReusableNodes(){
+        _reusableNodes.reset()
+    }
     
     static func dequeReusableNode() -> MuzzleNode{
         var node: MuzzleNode! = _reusableNodes.deque()
@@ -58,15 +55,12 @@ class MuzzleNode: SKSpriteNode{
     
     //MARK: - Animation
     
-    func addAnimation(){
-        let atlas = textureAtlasManager.playerAtlas
-        let animation = SKNode.createAnimation(from: atlas, animationName: "PlayerMuzzle", timePerFrame: STANDARD_TIME_PER_FRAME)
-        let removeAction = SKAction.customAction(withDuration: 0){_,_ in self.removeFromParent()}
-        muzzleAnimation = SKAction.sequence([animation, removeAction])
-    }
-    
     func updateAnimation(){
         removeAllActions()
-        run(SKAction.repeatForever(muzzleAnimation), withKey: "Animation")
+        let atlas = SKTextureAtlas(named: "Player@2x")
+        let animation = SKNode.createAnimation(from: atlas, animationName: "PlayerMuzzle", timePerFrame: STANDARD_TIME_PER_FRAME)
+        let removeAction = SKAction.customAction(withDuration: 0){_,_ in self.removeFromParent()}
+        let muzzleAnimation = SKAction.sequence([animation, removeAction])
+        run(SKAction.repeatForever(muzzleAnimation))
     }
 }

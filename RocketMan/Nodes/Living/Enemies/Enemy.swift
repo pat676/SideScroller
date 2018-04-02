@@ -51,6 +51,15 @@ class Enemy: Living{
     
     //MARK: - PhysicsNode interactions
     
+    override func collided(with node: PhysicsNode){
+        guard !isDead else {return}
+        if let player = node as? PlayerNode{
+            guard !player.isDead else {return}
+            let forceDirection = (player.position - self.position).normalized()
+            player.applyDamage(damage, pushback: pushback, forceDirection: forceDirection)
+        }
+    }
+    
     func directHit(by ammo: Amunition){
         let damage = ammo.damage
         let pushback = ammo.damagePushback
@@ -70,7 +79,7 @@ class Enemy: Living{
     private func applyDamage(_ damage: CGFloat, pushback: CGFloat, direction: CGPoint){
         guard health > 0 else {return}
         health -= damage
-        if(health < 0){
+        if(health <= 0){
             killed(with: pushback, forceDirection: direction)
         }
     }

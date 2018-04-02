@@ -91,7 +91,7 @@ extension GameScene{
         }
     
         //Add dust clode emitter
-        guard let dustBrown = newDustBrown() else {return}
+        guard let dustBrown = DustBrown.dequeReusableNode() else {return}
         dustBrown.position = tileCenter
         addChild(dustBrown)
     }
@@ -99,19 +99,7 @@ extension GameScene{
     //Same function as above, but with position instead of row / column
     func destroyTile(at point: CGPoint){
         tileMap!.removeTile(at: point)
-        guard let tileCenter = tileMap!.getTileCenterInScene(at: point) else {return}
-        
-        //Add "small tiles" falling down
-        for _ in 0..<DESTROYED_TILES_NUMBER{
-            let tile = DestroyedTileNode.dequeReusableNode()
-            tile.position = tileCenter
-            addChild(tile)
-        }
-        
-        //Add dust clode emitter
-        guard let dustBrown = newDustBrown() else {return}
-        dustBrown.position = tileCenter
-        addChild(dustBrown)
+        destroyTile(row: Int(point.y)/Int(TILE_SIZE), column: Int(point.x)/Int(TILE_SIZE))
     }
     
     //MARK: - Tile Properties

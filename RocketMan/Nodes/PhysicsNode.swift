@@ -273,6 +273,12 @@ class PhysicsNode: SKSpriteNode{
     
     //MARK: - Static Arrays Functionallity
     
+    static func resetStaticArrays(){
+        allNodes = [PhysicsNode]()
+        nodesAffectedByGravity = [PhysicsNode]()
+        nodesAffectedByPhysicNodes = [PhysicsNode]()
+    }
+    
     static func getAllNodes() -> [PhysicsNode]{
         return allNodes
     }
@@ -396,6 +402,11 @@ class PhysicsNode: SKSpriteNode{
         _lastFrameNode?.removeFromParent()
         _lastPhysicsFrameNode?.removeFromParent()
         _lastSensorPointNode?.removeFromParent()
+        removeAllActions()
+        for child in children{
+            child.removeAllActions()
+            child.removeFromParent()
+        }
         super.removeFromParent()
         changedParent()
     }

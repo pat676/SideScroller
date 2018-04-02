@@ -54,7 +54,7 @@ class DestroyedTileNode: PhysicsNode{
     
     //MARK: - Reusable Nodes
     
-    static func didReceiveMemoryWarning(){
+    static func resetReusableNodes(){
         _reusableNodes.reset()
     }
     
@@ -87,5 +87,4 @@ class DestroyedTileNode: PhysicsNode{
         super.removeFromParent()
         DestroyedTileNode.queueReusableNode(self)
     }
-
 }

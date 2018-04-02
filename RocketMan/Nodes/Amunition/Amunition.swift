@@ -36,7 +36,15 @@ class Amunition: PhysicsNode{
         
         anchorPoint = CGPoint.zero
         zPosition = 10
+        
+        addAnimations()
+        updateAnimation()
     }
+    
+    //MARK: - Animations
+    
+    func addAnimations(){}
+    func updateAnimation(){}
     
     func hitTarget(){
         if(AOERange != CGPoint.zero){

@@ -65,7 +65,7 @@ class PlayerNode: Living{
     //MARK: - Animations
     
     override func addAnimations(){
-        let atlas = textureAtlasManager.playerAtlas
+        let atlas = SKTextureAtlas(named: "Player@2x")
 
         runAnimation = SKNode.createAnimation(from: atlas, animationName: "PlayerRun", timePerFrame: STANDARD_TIME_PER_FRAME)
         jumpAnimation = SKNode.createAnimation(from: atlas, animationName: "PlayerJump", timePerFrame: STANDARD_TIME_PER_FRAME)
@@ -119,18 +119,6 @@ class PlayerNode: Living{
         guard !isDead else {return}
         if(currentAction == .Jumping || currentAction == .JumpShooting){
             currentAction = .Landing
-        }
-    }
-    
-    //MARK: - PhysicsNode Interaction
-    
-    override func collided(with node: PhysicsNode){
-        guard !isDead else {return}
-        if let enemy = node as? Enemy{
-            guard !enemy.isDead else {return}
-            print(node)
-            let forceDirection = (self.position - enemy.position).normalized()
-            self.applyDamage(enemy.damage, pushback: enemy.pushback, forceDirection: forceDirection)
         }
     }
     

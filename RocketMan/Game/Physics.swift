@@ -74,13 +74,12 @@ extension GameScene{
      * Adjusts the movement to collisions.
      *
      * Does a line sweep along the movement each sensor point applicable to the movement. (Uses sensor points on the top or
-     * bottom edge and left or right edge corresponding to the movement direction). Scans linwSweepPoints times evenly
+     * bottom edge and left or right edge corresponding to the movement direction). Scans lineSweepPoints times evenly
      * distributed along the sensor points movement to detect collision. X and Y direction are done seperatly and the last
      * non-colliding movement is used in each direction.
      */
 
     func adjustMovementForCollisionWithWorld(for node: PhysicsNode, with movement: CGPoint, lineSweepPoints: Int = 10) -> CGPoint{
-        
         guard movement != CGPoint.zero else {return movement}
         
         let movementStep = movement/CGFloat(lineSweepPoints)
@@ -121,7 +120,7 @@ extension GameScene{
         }
         return adjustedMovement
     }
-    
+
     func nodeHitWorld(_ node: PhysicsNode, at point: CGPoint, direction: Direction){
         if(direction == .Up){node.hitSolidRoof(at: point)}
         else if(direction == .Down){node.hitSolidGround(at: point)}

@@ -15,8 +15,11 @@
 		CD00CA13205707EE008E0A75 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD00CA11205707EE008E0A75 /* LaunchScreen.storyboard */; };
 		CD00CA21205714CF008E0A75 /* BackgroundNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD00CA20205714CF008E0A75 /* BackgroundNode.swift */; };
 		CD1D198F206843D4009E17E2 /* DustBrown.sks in Resources */ = {isa = PBXBuildFile; fileRef = CD1D198E206843D4009E17E2 /* DustBrown.sks */; };
-		CD1D19912068444B009E17E2 /* Emitters.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD1D19902068444B009E17E2 /* Emitters.swift */; };
 		CD1D199A2068DF9B009E17E2 /* Enemies Ideas in Resources */ = {isa = PBXBuildFile; fileRef = CD1D19992068DF9B009E17E2 /* Enemies Ideas */; };
+		CD2292B62070F57E00D6CF94 /* ExplosionFire.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2292B52070F57E00D6CF94 /* ExplosionFire.swift */; };
+		CD2292B82071039700D6CF94 /* ExplosionSmoke.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2292B72071039700D6CF94 /* ExplosionSmoke.swift */; };
+		CD2292BA2071052600D6CF94 /* DustBrown.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2292B92071052600D6CF94 /* DustBrown.swift */; };
+		CD2292BC2071072D00D6CF94 /* BloodEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD2292BB2071072D00D6CF94 /* BloodEmitter.swift */; };
 		CD4CB5F0206BEB9500662AAC /* Player@2x.atlas in Resources */ = {isa = PBXBuildFile; fileRef = CD4CB5EF206BEB9500662AAC /* Player@2x.atlas */; };
 		CD4CB60F206BF21900662AAC /* GroundSummer@2x.atlas in Resources */ = {isa = PBXBuildFile; fileRef = CD4CB60E206BF21900662AAC /* GroundSummer@2x.atlas */; };
 		CD4CB614206D490A00662AAC /* Blood.sks in Resources */ = {isa = PBXBuildFile; fileRef = CD4CB612206D490A00662AAC /* Blood.sks */; };
@@ -39,7 +42,6 @@
 		CD713FBF206A86BF00D452C1 /* VelocityAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD713FBE206A86BF00D452C1 /* VelocityAI.swift */; };
 		CD713FC1206A887A00D452C1 /* ShootAI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD713FC0206A887A00D452C1 /* ShootAI.swift */; };
 		CD713FC5206B943A00D452C1 /* LoadingScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD713FC4206B943A00D452C1 /* LoadingScene.swift */; };
-		CD713FC7206B947700D452C1 /* TextureAtlasManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD713FC6206B947700D452C1 /* TextureAtlasManager.swift */; };
 		CD713FC9206B9B5A00D452C1 /* TexturesConventions in Resources */ = {isa = PBXBuildFile; fileRef = CD713FC8206B9B5A00D452C1 /* TexturesConventions */; };
 		CD85A58F206A5F9800211FE8 /* Living.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD85A58E206A5F9800211FE8 /* Living.swift */; };
 		CD85A591206A60EE00211FE8 /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD85A590206A60EE00211FE8 /* Enemy.swift */; };
@@ -66,8 +68,11 @@
 		CD00CA14205707EE008E0A75 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CD00CA20205714CF008E0A75 /* BackgroundNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundNode.swift; sourceTree = "<group>"; };
 		CD1D198E206843D4009E17E2 /* DustBrown.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DustBrown.sks; sourceTree = "<group>"; };
-		CD1D19902068444B009E17E2 /* Emitters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emitters.swift; sourceTree = "<group>"; };
 		CD1D19992068DF9B009E17E2 /* Enemies Ideas */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Enemies Ideas"; sourceTree = "<group>"; };
+		CD2292B52070F57E00D6CF94 /* ExplosionFire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplosionFire.swift; sourceTree = "<group>"; };
+		CD2292B72071039700D6CF94 /* ExplosionSmoke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplosionSmoke.swift; sourceTree = "<group>"; };
+		CD2292B92071052600D6CF94 /* DustBrown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DustBrown.swift; sourceTree = "<group>"; };
+		CD2292BB2071072D00D6CF94 /* BloodEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloodEmitter.swift; sourceTree = "<group>"; };
 		CD4CB5EF206BEB9500662AAC /* Player@2x.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = "Player@2x.atlas"; sourceTree = "<group>"; };
 		CD4CB60E206BF21900662AAC /* GroundSummer@2x.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = "GroundSummer@2x.atlas"; sourceTree = "<group>"; };
 		CD4CB612206D490A00662AAC /* Blood.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Blood.sks; sourceTree = "<group>"; };
@@ -90,7 +95,6 @@
 		CD713FBE206A86BF00D452C1 /* VelocityAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VelocityAI.swift; sourceTree = "<group>"; };
 		CD713FC0206A887A00D452C1 /* ShootAI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShootAI.swift; sourceTree = "<group>"; };
 		CD713FC4206B943A00D452C1 /* LoadingScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingScene.swift; sourceTree = "<group>"; };
-		CD713FC6206B947700D452C1 /* TextureAtlasManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureAtlasManager.swift; sourceTree = "<group>"; };
 		CD713FC8206B9B5A00D452C1 /* TexturesConventions */ = {isa = PBXFileReference; lastKnownFileType = text; path = TexturesConventions; sourceTree = "<group>"; };
 		CD85A58E206A5F9800211FE8 /* Living.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Living.swift; sourceTree = "<group>"; };
 		CD85A590206A60EE00211FE8 /* Enemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
@@ -172,7 +176,6 @@
 				CD00CA11205707EE008E0A75 /* LaunchScreen.storyboard */,
 				CD00CA0A205707EE008E0A75 /* GameViewController.swift */,
 				CD713FC4206B943A00D452C1 /* LoadingScene.swift */,
-				CD713FC6206B947700D452C1 /* TextureAtlasManager.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -281,7 +284,10 @@
 		CDCC43CB2067C35D00A5E2DE /* Effects */ = {
 			isa = PBXGroup;
 			children = (
-				CD1D19902068444B009E17E2 /* Emitters.swift */,
+				CD2292B52070F57E00D6CF94 /* ExplosionFire.swift */,
+				CD2292B72071039700D6CF94 /* ExplosionSmoke.swift */,
+				CD2292B92071052600D6CF94 /* DustBrown.swift */,
+				CD2292BB2071072D00D6CF94 /* BloodEmitter.swift */,
 				CDA42866206451C3002836CA /* ExplosionFire.sks */,
 				CDA4286E20645C15002836CA /* ExplosionSmoke.sks */,
 				CD1D198E206843D4009E17E2 /* DustBrown.sks */,
@@ -380,10 +386,10 @@
 				CD57A519205AFC21003DF1D4 /* PhysicsNode.swift in Sources */,
 				CD00CA09205707EE008E0A75 /* GameScene.swift in Sources */,
 				CD00CA21205714CF008E0A75 /* BackgroundNode.swift in Sources */,
-				CD1D19912068444B009E17E2 /* Emitters.swift in Sources */,
 				CD57A5092059BC0E003DF1D4 /* SKNode.swift in Sources */,
 				CD57A5122059D089003DF1D4 /* UtilVector.swift in Sources */,
 				CD57A5102059CB67003DF1D4 /* Physics.swift in Sources */,
+				CD2292BC2071072D00D6CF94 /* BloodEmitter.swift in Sources */,
 				CDCC43F62067CB8C00A5E2DE /* MuzzleNode.swift in Sources */,
 				CD57A51B205B0322003DF1D4 /* CGRect.swift in Sources */,
 				CDCC43F82067D3C200A5E2DE /* ReusableNodes.swift in Sources */,
@@ -391,9 +397,10 @@
 				CD85A58F206A5F9800211FE8 /* Living.swift in Sources */,
 				CDCC43FA2067E81000A5E2DE /* DestroyedTileNode.swift in Sources */,
 				CD713FC5206B943A00D452C1 /* LoadingScene.swift in Sources */,
+				CD2292B82071039700D6CF94 /* ExplosionSmoke.swift in Sources */,
 				CD85A59D206A68B400211FE8 /* Zombie.swift in Sources */,
 				CDA4286520643884002836CA /* AlternativeMovementCollision.swift in Sources */,
-				CD713FC7206B947700D452C1 /* TextureAtlasManager.swift in Sources */,
+				CD2292B62070F57E00D6CF94 /* ExplosionFire.swift in Sources */,
 				CD713FBA206A78AB00D452C1 /* Enemies.swift in Sources */,
 				CD00CA03205707EE008E0A75 /* AppDelegate.swift in Sources */,
 				CD57A50720599A05003DF1D4 /* World.swift in Sources */,
@@ -405,6 +412,7 @@
 				CD57A50D2059C59B003DF1D4 /* PlayerNode.swift in Sources */,
 				CD713FBF206A86BF00D452C1 /* VelocityAI.swift in Sources */,
 				CDB529EF206306BD00DFE983 /* SKTileMapNode.swift in Sources */,
+				CD2292BA2071052600D6CF94 /* DustBrown.swift in Sources */,
 				CD57A4DA20584104003DF1D4 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -53,7 +53,7 @@ extension GameScene{
     }
     
     func addZombie(tileMap: SKTileMapNode, row: Int, column: Int){
-        let zombie = Zombie()
+        let zombie = Zombie.dequeReusableNode()
         zombie.position = CGPoint(x: CGFloat(column)*TILE_SIZE, y: CGFloat(row)*TILE_SIZE)
         zombie.position = convert(zombie.position, from: tileMap)
         addChild(zombie)

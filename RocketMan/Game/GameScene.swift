@@ -15,7 +15,7 @@ class GameScene: SKScene {
     
     var background: BackgroundNode!
     var player: PlayerNode!
-    weak var tileMap: SKTileMapNode?
+    var tileMap: SKTileMapNode?
     var tileMapsHealth = [[CGFloat]]() // Keeps track of tile health
     var textOverlayNode: SKSpriteNode?
     
@@ -44,7 +44,11 @@ class GameScene: SKScene {
             }
         }
     }
-    var gameOver = false
+    var isGameOver:Bool{
+        return isGameWon || isGameLost
+    }
+    var isGameWon = false
+    var isGameLost = false
     
     //Mark: - Enemies Properties
     
@@ -61,9 +65,24 @@ class GameScene: SKScene {
     override func didMove(to view: SKView){
         NotificationCenter.default.addObserver(self, selector: #selector(setShouldPause), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
+    
+    override func willMove(from view: SKView) {
+        background = nil
+        player = nil
+        tileMap = nil
+        textOverlayNode = nil
+        playableRect = nil
+        enemiesTileMap = nil
+        for node in children{
+            node.removeAllActions()
+            node.removeFromParent()
+        }
+        resetDequableNodes()
+    }
 
 
     func setup(){
+        resetDequableNodes()
         preloadDequableNodes()
         addPlayableRect()
         addBackground()
@@ -76,16 +95,15 @@ class GameScene: SKScene {
     //MARK: - Game update
     
     override func update(_ currentTime: TimeInterval){
-        if(shouldPause){
-            pauseGame()
-            shouldPause = false;
-            return
-        }
+        if(shouldPause && isGameWon){ gameWon()}
+        else if(shouldPause && isGameLost) {gameLost()}
+        else if(shouldPause) {pauseGame()}
+        shouldPause = false
         
         if !isPaused{
             //Updates phase before Physics
             updateDt(currentTime)
-            if(!gameOver){
+            if(!isGameOver){
                 background.update(to: camera!, sceneWidth: frame.width)
                 camera!.update(dt: dt)
                 player.update(in: cameraPlayableRect)
@@ -94,7 +112,7 @@ class GameScene: SKScene {
             //Physics phase
             runPhysics()
             
-            if(!gameOver){
+            if(!isGameOver){
                 checkWinCondition()
                 checkLooseCondition()
             }
@@ -119,13 +137,15 @@ class GameScene: SKScene {
     //MARK: - Add Nodes
     
     func addBackground(){
-        background = BackgroundNode(size: size)
+        let background = BackgroundNode(size: size)
         addChild(background)
+        self.background = background
     }
     
     func addPlayer(){
-        player = PlayerNode(playableRect: playableRect, playerMargin: PLAYER_MARGIN)
+        let player = PlayerNode(playableRect: playableRect, playerMargin: PLAYER_MARGIN)
         addChild(player)
+        self.player = player
     }
     
     func addCamera(){
@@ -142,8 +162,24 @@ class GameScene: SKScene {
     
     func preloadDequableNodes(){
         PlayerBulletNode.preloadReusableNodes(amount: 8)
+        ExplosionFire.preloadReusableNodes(amount: 8)
+        ExplosionSmoke.preloadReusableNodes(amount: 8)
+        DustBrown.preloadReusableNodes(amount: 8)
+        BloodEmitter.preloadReusableNodes(amount: 2)
         MuzzleNode.preloadReusableNodes(amount: 2)
+        Zombie.preloadReusableNodes(amount: 4)
         DestroyedTileNode.preloadReusableNodes(amount: 20)
+    }
+    
+    func resetDequableNodes(){
+        PlayerBulletNode.resetReusableNodes()
+        ExplosionFire.resetReusableNodes()
+        ExplosionSmoke.resetReusableNodes()
+        DustBrown.resetReusableNodes()
+        BloodEmitter.resetReusableNodes()
+        MuzzleNode.resetReusableNodes()
+        DestroyedTileNode.resetReusableNodes()
+        PhysicsNode.resetStaticArrays()
     }
     
     //MARK: - DataStorage

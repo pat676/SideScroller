@@ -10,8 +10,6 @@ import Foundation
 
 class ReusableNodes<NodeType>{
     
-    // A thread safe class for queueing and dequeueing reusable nodes
-    
     private var _reusableNodes = [NodeType]()
     private var _accessQueue: DispatchQueue
     

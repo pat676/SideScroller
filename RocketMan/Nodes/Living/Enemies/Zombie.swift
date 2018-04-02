@@ -11,7 +11,6 @@ import SpriteKit
 class Zombie: Enemy{
     
     //MARK: - Properties
-    
     var idleAnimation: SKAction!
     var walkAnimation: SKAction!
     var attackAnimation: SKAction!
@@ -30,8 +29,25 @@ class Zombie: Enemy{
         speed = ZOMBIE_SPEED
         damage = ZOMBIE_DAMAGE
         pushback = ZOMBIE_PUSHBACK
-        
         viewDistance = ZOMBIE_VIEW_DISTANCE
+        health = ZOMBIE_HEALTH
+        
+        getVelocity = velocityAI.simpleVelocity
+        hasCloseAttack = true
+        zPosition = 101
+    }
+    
+    func reset(){
+        health = ZOMBIE_HEALTH
+        
+        zRotation = 0
+        currentAction = .Idle
+        updateAnimation()
+        isAffectedByWorldSolids = true
+        shouldUpdateFacing = true
+        continuesRotationAngle = 0
+        continuesRotationTime = 0
+        anchorPoint = CGPoint.zero
         getVelocity = velocityAI.simpleVelocity
         hasCloseAttack = true
         zPosition = 101
@@ -39,9 +55,9 @@ class Zombie: Enemy{
     
     //MARK: - Animations
     
-    override func addAnimations(){
-        let atlas = textureAtlasManager.zombieAtlas
-        idleAnimation = SKNode.createAnimation(from: atlas, animationName: "ZombieIdle", timePerFrame: ZOMBIE_IDLE_TIME_PER_FRAME)
+    override func addAnimations() {
+        let atlas = SKTextureAtlas(named: "Zombie@2x")
+        idleAnimation = SKNode.createAnimation(from: atlas, animationName: "ZombieIdle", timePerFrame: ZOMBIE_MOVE_TIME_PER_FRAME)
         walkAnimation = SKNode.createAnimation(from: atlas, animationName: "ZombieWalk", timePerFrame: ZOMBIE_MOVE_TIME_PER_FRAME)
         attackAnimation = SKNode.createAnimation(from: atlas, animationName: "ZombieAttack", timePerFrame: ZOMBIE_MOVE_TIME_PER_FRAME)
         deathAnimation = SKNode.createAnimation(from: atlas, animationName: "ZombieDead", timePerFrame: ZOMBIE_MOVE_TIME_PER_FRAME)
@@ -70,7 +86,7 @@ class Zombie: Enemy{
     
     func addBloodEmitter(){
         if(bloodEmitter == nil){
-            bloodEmitter = newBloodEmitter()
+            bloodEmitter = BloodEmitter.dequeReusableNode()
         }
         guard bloodEmitter != nil else {return}
         bloodEmitter!.position.x = size.width * ZOMBIE_BLOOD_POSITION.x
@@ -80,12 +96,48 @@ class Zombie: Enemy{
     }
     
     func removeBloodEmitter(){
-        bloodEmitter?.removeFromParent()
+        if let node = bloodEmitter{
+            BloodEmitter.removeNode(node: node)
+        }
     }
     
     //MARK: - Death
     
     override func killedAnimated(forceDirection: CGPoint) {
         currentAction = .Dying
+    }
+    
+    //MARK: - Reusable Nodes
+    
+    private static var _reusableNodes = ReusableNodes<Zombie>(label: "ZombieNodeQueue")
+    
+    static func resetReusableNodes(){
+        _reusableNodes.reset()
+    }
+    
+    static func dequeReusableNode() -> Zombie{
+        var node: Zombie! = _reusableNodes.deque()
+        if(node == nil || node.parent != nil){
+            node = Zombie()
+        }
+        node.reset()
+        return node
+    }
+    
+    static func queueReusableNode(_ node: Zombie){
+        node.removeAllActions()
+        _reusableNodes.queue(node)
+    }
+    
+    static func preloadReusableNodes(amount: Int){
+        for _ in 0..<amount{
+            let node = Zombie();
+            queueReusableNode(node)
+        }
+    }
+    
+    override func removeFromParent() {
+        super.removeFromParent()
+        Zombie.queueReusableNode(self)
     }
 }
