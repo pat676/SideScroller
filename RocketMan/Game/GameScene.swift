@@ -15,8 +15,6 @@ class GameScene: SKScene {
     
     var background: BackgroundNode!
     var player: PlayerNode!
-    var tileMap: SKTileMapNode?
-    var tileMapsHealth = [[CGFloat]]() // Keeps track of tile health
     var textOverlayNode: SKSpriteNode?
     
     
@@ -33,6 +31,7 @@ class GameScene: SKScene {
     
     var lastUpdateTime: TimeInterval = 0;
     var dt: TimeInterval = 0;
+    var frameCount = 0;
     
     //MARK: Game Logic Properties
     var shouldPause = false //Used in update to fix a bug where game is resumed when reentering active state
@@ -54,6 +53,12 @@ class GameScene: SKScene {
     
     var enemiesTileMap:SKTileMapNode!
     var lastMaxColumnForEnemies: Int = 0
+    
+    //Mark: - World Properties
+    
+    var tileMap: SKTileMapNode?
+    var tileMapsHealth = [[CGFloat]]() // Keeps track of tile health
+    var tileMapSolids = [[Bool]]()
     
     //MARK: - System
     /*
@@ -118,9 +123,13 @@ class GameScene: SKScene {
             }
             updateEnemies()
             
-            //Cleanup phase
-            removeNodesOutsideView()
+            //Cleanup phase, every 60 frames
+            if(frameCount >= 60){
+                removeNodesOutsideView()
+                frameCount = 0
+            }
         }
+        frameCount += 1
     }
     
     //Calculates the time passed since last frame
@@ -167,7 +176,7 @@ class GameScene: SKScene {
         DustBrown.preloadReusableNodes(amount: 8)
         BloodEmitter.preloadReusableNodes(amount: 2)
         MuzzleNode.preloadReusableNodes(amount: 2)
-        Zombie.preloadReusableNodes(amount: 4)
+        Zombie.preloadReusableNodes(amount: 8)
         DestroyedTileNode.preloadReusableNodes(amount: 20)
     }
     

@@ -12,12 +12,14 @@ class DestroyedTileNode: PhysicsNode{
     
     //MARK: - Properties
     
+    static let texture = SKTexture(imageNamed: "GroundMidMid1.png")
+    
     var startVelocity: CGPoint!
     var rotateAction: SKAction!
 
     //MARK: - System
     convenience init(){
-        self.init(imageNamed: "GroundMidMid1.png")
+        self.init(texture: DestroyedTileNode.texture)
         name = "DestroyedTile"
         
         isAffectedByGravity = true

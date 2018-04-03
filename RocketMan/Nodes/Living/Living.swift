@@ -38,6 +38,10 @@ class Living: PhysicsNode{
     
     convenience init(imageNamed: String){
         let texture = SKTexture(imageNamed: imageNamed)
+        self.init(with: texture)
+    }
+    
+    convenience init(with texture: SKTexture){
         self.init(texture: texture, color: .clear, size: texture.size())
         
         isAffectedByGravity = true

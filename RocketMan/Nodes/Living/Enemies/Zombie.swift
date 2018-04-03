@@ -11,6 +11,7 @@ import SpriteKit
 class Zombie: Enemy{
     
     //MARK: - Properties
+    
     var idleAnimation: SKAction!
     var walkAnimation: SKAction!
     var attackAnimation: SKAction!

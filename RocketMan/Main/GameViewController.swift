@@ -20,8 +20,10 @@ class GameViewController: UIViewController {
     func presentScene(){
         let scene = LoadingScene(size: CGSize(width: 2048, height: 1536))
         let skView = self.view as! SKView
+        
         skView.showsFPS = true
         skView.showsNodeCount = true
+        skView.showsDrawCount = true
         skView.ignoresSiblingOrder = true
         skView.showsPhysics = false
         skView.presentScene(scene)

@@ -15,11 +15,28 @@ extension GameScene{
         self.tileMap = tileMap
         tileMap.anchorPoint = CGPoint.zero
         tileMap.position = CGPoint(x: 0, y: playableRect.minY)
-        addTileMapHealth()
+        createTileMapHealthMatrix()
+        createTileMapSolidMatrix()
+    }
+    
+    //Creates a boolean matrix with true for solid values
+    private func createTileMapSolidMatrix(){
+        tileMapSolids =  Array(repeating: Array(repeating: false, count: tileMap!.numberOfColumns), count: tileMap!.numberOfRows)
+        for row in 0..<tileMap!.numberOfRows{
+            for column in 0..<tileMap!.numberOfColumns{
+                if let tileDefinition = tileMap!.getTileDefinition(row: row, column: column){
+                    if(tileDefinition.userData?["isSolid"] != nil){
+                        if(tileDefinition.userData!["isSolid"] as! Bool){
+                            tileMapSolids[row][column] = true
+                        }
+                    }
+                }
+            }
+        }
     }
     
     //Adds 2d matricies with inital value 100 to keep track of the tiles health
-    private func addTileMapHealth(){
+    private func createTileMapHealthMatrix(){
         tileMapsHealth = Array(repeating: Array(repeating: 100, count: tileMap!.numberOfColumns), count: tileMap!.numberOfRows)
     }
     
@@ -31,7 +48,7 @@ extension GameScene{
     //Damages the tile at position and deals AOE damage if Amunition has AOE != CGPoint.zero
     func damageTile(at position: CGPoint, from node: Amunition){
         guard tileMap!.frame.contains(position) else {return}
-        let localPos = convert(position, to: tileMap!)
+        let localPos = position - tileMap!.position
         guard let row = tileMap?.tileRowIndex(fromPosition: localPos) else {return}
         guard let col = tileMap?.tileColumnIndex(fromPosition: localPos) else {return}
 
@@ -81,6 +98,7 @@ extension GameScene{
     //Removes tiles and replaces them with NUM_DESTROYED_TILES that will fall out of scene
     func destroyTile(row: Int, column: Int){
         tileMap!.removeTile(row: row, column: column)
+        tileMapSolids[row][column] = false
         guard let tileCenter = tileMap!.getTileCenterInScene(row: row, column: column) else {return}
         
         //Add "small tiles" falling down
@@ -98,7 +116,6 @@ extension GameScene{
     
     //Same function as above, but with position instead of row / column
     func destroyTile(at point: CGPoint){
-        tileMap!.removeTile(at: point)
         destroyTile(row: Int(point.y)/Int(TILE_SIZE), column: Int(point.x)/Int(TILE_SIZE))
     }
     
@@ -106,24 +123,17 @@ extension GameScene{
     
     //Returns true if the tile at the given position is marked as solid
     func hasSolidObject(at position: CGPoint) -> Bool{
-        guard tileMap!.frame.contains(position) else {return false}
-        let localPos = convert(position, to: tileMap!)
-        if let tileDefinition = tileMap?.getTileDefinition(at: localPos){
-            if(tileDefinition.userData?["isSolid"] != nil){
-                return true
-            }
-        }
-        return false
+        let localPos = position - tileMap!.position
+        let row = Int(localPos.y) / Int(TILE_SIZE)
+        let column = Int(localPos.x) / Int(TILE_SIZE)
+        return hasSolidObject(row: row, column: column)
     }
     
     //Does the same as the previous function but with row and column indexes instead of position
     func hasSolidObject(row: Int, column: Int) -> Bool{
-        if let tileDefinition = tileMap!.getTileDefinition(row: row, column: column){
-            if(tileDefinition.userData?["isSolid"] != nil){
-                return true
-            }
-        }
-        return false
+        guard row < tileMap!.numberOfRows && column < tileMap!.numberOfColumns else {return false}
+        guard row >= 0 && column >= 0 else {return false}
+        return tileMapSolids[row][column]
     }
     
     //Returns true if the tile is destructible

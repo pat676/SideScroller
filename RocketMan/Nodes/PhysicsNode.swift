@@ -92,7 +92,6 @@ class PhysicsNode: SKSpriteNode{
     private var _topSensorPoints = [CGPoint]()
     
     private var _oldParent: SKNode? // Used in willUpdatePhysics and removeFromParent() to check for changed parent
-    
     //MARK: - Debug properties
     
     var shouldDrawFrame = false
