@@ -130,3 +130,60 @@ func getCommonSensorPoint(sensorPointsX: [CGPoint], sensorPointsY: [CGPoint]) ->
     return nil
 }
 */
+
+
+/*
+ * Adjusts the movement to collisions.
+ *
+ * Does a line sweep along the movement each sensor point applicable to the movement. (Uses sensor points on the top or
+ * bottom edge and left or right edge corresponding to the movement direction). Scans lineSweepPoints times evenly
+ * distributed along the sensor points movement to detect collision. X and Y direction are done seperatly and the last
+ * non-colliding movement is used in each direction.
+ */
+/*
+func adjustMovementForCollisionWithWorld(for node: PhysicsNode, with movement: CGPoint, lineSweepPoints: Int = 10) -> CGPoint{
+    guard movement != CGPoint.zero else {return movement}
+    
+    let movementStep = movement/CGFloat(lineSweepPoints)
+    var adjustedMovement = CGPoint.zero
+    var hasHitSolidYDirection = false
+    var hasHitSolidXDirection = false
+    
+    let directionX:Direction = movement.x < 0 ? .Left : .Right
+    let directionY:Direction = movement.y < 0 ? .Down : .Up
+    
+    let pointsToCheckX = directionX == .Left ? node.getLeftSensorPoints() : node.getRightSensorPoints();
+    let pointsToCheckY = directionY == .Down ? node.getBottomSensorPoints() : node.getTopSensorPoints();
+    
+    for _ in 0..<lineSweepPoints{
+        if(!hasHitSolidYDirection){
+            adjustedMovement.y += movementStep.y
+            for point in pointsToCheckY{
+                if hasSolidObject(at: point + adjustedMovement){
+                    nodeHitWorld(node, at: point + adjustedMovement, direction: directionY)
+                    adjustedMovement.y -= movementStep.y
+                    if(directionY == .Down){adjustedMovement.y = ceil(adjustedMovement.y)}
+                    else{adjustedMovement.y = floor(adjustedMovement.y)}
+                    hasHitSolidYDirection = true
+                    break
+                }
+            }
+        }
+        
+        if(!hasHitSolidXDirection){
+            adjustedMovement.x += movementStep.x
+            for point in pointsToCheckX{
+                if hasSolidObject(at: point + adjustedMovement){
+                    nodeHitWorld(node, at: point + adjustedMovement, direction: directionX)
+                    adjustedMovement.x -= movementStep.x
+                    if(directionX == .Left){adjustedMovement.x = ceil(adjustedMovement.x)}
+                    else{adjustedMovement.x = floor(adjustedMovement.x)}
+                    hasHitSolidXDirection = true
+                    break
+                }
+            }
+        }
+    }
+    return adjustedMovement
+}
+*/
