@@ -1,5 +1,5 @@
 # SideScroller
-A iOS Simple SideScrolling game
+A Simple iOS SideScrolling game
 
 I created this game to learn more about programming 2D games and Swift. It's in working condition, but expect several unfixed 
 bugs and limited content. Because of limited time i won't do any further work on this game, fell free to use it as you want. 
